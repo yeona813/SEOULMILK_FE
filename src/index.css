@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+  font-family: "Pretendard", sans-serif;
+}
+
+.container-desktop {
+  @apply mx-auto max-w-[1440px] px-20;
+}
+
+.grid-desktop {
+  @apply grid grid-cols-12 gap-4;
+}
