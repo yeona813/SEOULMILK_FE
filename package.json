@@ -38,5 +38,9 @@
     "typescript-eslint": "^8.24.1",
     "vite": "^6.0.5",
     "vite-plugin-eslint": "^1.8.1"
+  },
+  "headwind.classRegex": {
+    "css": "\\B@apply\\s+([_a-zA-Z0-9\\s\\-\\:\\/]+);",
+    "postcss": "\\B@apply\\s+([_a-zA-Z0-9\\s\\-\\:\\/]+);"
   }
 }
