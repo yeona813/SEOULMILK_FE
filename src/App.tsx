@@ -1,5 +1,8 @@
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routers"; // 라우터 경로에 맞게 import
+
 function App() {
-  return <div className="text-h1 text-secondary-400">App</div>;
+  return <RouterProvider router={router} />;
 }
 
 export default App;
