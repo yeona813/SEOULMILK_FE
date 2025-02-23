@@ -21,7 +21,7 @@ const PasswordInput = () => {
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
-
+  console.log(errors);
   const onFocus = () => {
     setIsFocused(true);
     setPlaceholder("비밀번호를 입력해 주세요");
