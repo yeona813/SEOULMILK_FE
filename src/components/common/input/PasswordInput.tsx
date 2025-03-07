@@ -2,12 +2,7 @@ import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 const PasswordInput = () => {
-  const {
-    register,
-    formState: { errors },
-    watch,
-    setValue,
-  } = useFormContext();
+  const { register, watch, setValue } = useFormContext();
 
   const password = watch("password");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -21,7 +16,7 @@ const PasswordInput = () => {
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
-  console.log(errors);
+
   const onFocus = () => {
     setIsFocused(true);
     setPlaceholder("비밀번호를 입력해 주세요");
@@ -31,23 +26,31 @@ const PasswordInput = () => {
     setTimeout(() => {
       setIsFocused(false);
     }, 100);
-
     setPlaceholder("비밀번호");
   };
 
   return (
     <div className="relative flex items-center w-[442px] border-[1px] border-grayScale-100 border-solid h-[60px] rounded-[16px]">
       <input
-        className="bg-grayScale-50 placeholder-gray-400 rounded-[15px] text-gray-800 w-full h-full text-lg pl-4 pr-10 font-semibold focus:ring-2 focus:ring-secondary-500 focus:outline-none focus:caret-secondary-500"
+        className="bg-grayScale-50 placeholder-gray-400 rounded-[15px] text-gray-800 w-full h-full b2 pl-4 pr-10 focus:ring-2 focus:ring-secondary-500 focus:outline-none focus:caret-secondary-500"
         type={isPasswordVisible ? "text" : "password"}
         id="password"
         placeholder={placeholder}
         value={password}
         {...register("password", {
-          required: "Password is required",
+          required: true,
+          minLength: {
+            value: 8,
+            message: "사원번호 또는 비밀번호가 잘못 되었습니다.",
+          },
+          maxLength: {
+            value: 16,
+            message: "사원번호 또는 비밀번호가 잘못 되었습니다.",
+          },
           pattern: {
-            value: /^[A-Za-z0-9]+$/,
-            message: "Password must be alphanumeric",
+            value:
+              /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$/,
+            message: "사원번호 또는 비밀번호가 잘못 되었습니다.",
           },
         })}
         onFocus={onFocus}
@@ -61,7 +64,11 @@ const PasswordInput = () => {
             className="absolute inset-y-0 px-2 right-8 center"
           >
             <img
-              src={isPasswordVisible ? "/icons/eye.svg" : "/icons/eyeOff.svg"}
+              src={
+                isPasswordVisible
+                  ? "/assets/icons/eye.svg"
+                  : "/assets/icons/eyeOff.svg"
+              }
               alt="Toggle visibility"
               className="w-4 h-4"
             />
@@ -71,7 +78,11 @@ const PasswordInput = () => {
             type="button"
             className="absolute inset-y-0 px-2 right-2 center"
           >
-            <img src="/icons/delete.svg" alt="Delete" className="w-4 h-4" />
+            <img
+              src="/assets/icons/delete.svg"
+              alt="Delete"
+              className="w-[22px] h-[22px] hover:bg-gray-200 rounded-full"
+            />
           </button>
         </>
       )}

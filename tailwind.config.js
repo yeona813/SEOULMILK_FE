@@ -1,4 +1,5 @@
 const { Warning } = require("postcss");
+const plugin = require("tailwindcss/plugin");
 
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/**/*.html"],
@@ -87,5 +88,133 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addUtilities }) {
+      const newUtilities = {
+        // Header Styles
+        ".h1": {
+          fontWeight: "bold",
+          fontSize: "32px",
+          lineHeight: "160%",
+          letterSpacing: "-0.6px",
+        },
+        ".h2": {
+          fontWeight: "bold",
+          fontSize: "28px",
+          lineHeight: "160%",
+          letterSpacing: "-0.6px",
+        },
+        ".h3": {
+          fontWeight: "bold",
+          fontSize: "24px",
+          lineHeight: "160%",
+          letterSpacing: "-0.6px",
+        },
+        ".h4": {
+          fontWeight: "500",
+          fontSize: "24px",
+          lineHeight: "160%",
+          letterSpacing: "-0.6px",
+        },
+
+        // Subtitle Styles
+        ".st1": {
+          fontWeight: "bold",
+          fontSize: "20px",
+          lineHeight: "160%",
+          letterSpacing: "-0.6px",
+        },
+        ".st2": {
+          fontWeight: "500",
+          fontSize: "20px",
+          lineHeight: "160%",
+          letterSpacing: "-0.6px",
+        },
+        ".st3": {
+          fontWeight: "bold",
+          fontSize: "18px",
+          lineHeight: "160%",
+          letterSpacing: "-0.6px",
+        },
+        ".st4": {
+          fontWeight: "500",
+          fontSize: "18px",
+          lineHeight: "160%",
+          letterSpacing: "-0.6px",
+        },
+
+        // Body Styles
+        ".b1": {
+          fontWeight: "bold",
+          fontSize: "16px",
+          lineHeight: "160%",
+          letterSpacing: "-0.6px",
+        },
+        ".b2": {
+          fontWeight: "600",
+          fontSize: "16px",
+          lineHeight: "160%",
+          letterSpacing: "-0.6px",
+        },
+        ".b3": {
+          fontWeight: "600",
+          fontSize: "14px",
+          lineHeight: "160%",
+          letterSpacing: "-0.6px",
+        },
+        ".b4": {
+          fontWeight: "500",
+          fontSize: "14px",
+          lineHeight: "160%",
+          letterSpacing: "-0.6px",
+        },
+        ".b5": {
+          fontWeight: "500",
+          fontSize: "12px",
+          lineHeight: "160%",
+          letterSpacing: "-0.6px",
+        },
+        ".b6": {
+          fontWeight: "400",
+          fontSize: "12px",
+          lineHeight: "160%",
+          letterSpacing: "-0.6px",
+        },
+
+        // Caption Styles
+        ".c1": {
+          fontWeight: "500",
+          fontSize: "10px",
+          lineHeight: "160%",
+          letterSpacing: "-0.6px",
+        },
+        ".c2": {
+          fontWeight: "400",
+          fontSize: "10px",
+          lineHeight: "160%",
+          letterSpacing: "-0.6px",
+        },
+        ".c3": {
+          fontWeight: "500",
+          fontSize: "8px",
+          lineHeight: "160%",
+          letterSpacing: "-0.6px",
+        },
+        ".c4": {
+          fontWeight: "400",
+          fontSize: "8px",
+          lineHeight: "160%",
+          letterSpacing: "-0.6px",
+        },
+        ".c5": {
+          fontWeight: "400",
+          fontSize: "6px",
+          lineHeight: "100%",
+          letterSpacing: "-0.6px",
+        },
+      };
+
+      addUtilities(newUtilities, ["responsive", "hover"]);
+    }),
+  ],
 };

@@ -19,7 +19,7 @@ const SelectButton = ({ children }: SelectButtonProps) => {
 
   return (
     <button
-      className={`py-[2px] rounded-[13px] text-b2 px-[11px] ${getClass()} font-semibold`}
+      className={`py-[2px] rounded-[13px] b2 px-[11px] ${getClass()} `}
       onClick={selectHandler}
     >
       {children}
