@@ -20,7 +20,7 @@ export const navigationItems = [
   },
   {
     text: "사용자 등록",
-    url: "/register",
+    url: "/addUser",
     icon: AddUser,
     roles: ["admin"],
   },

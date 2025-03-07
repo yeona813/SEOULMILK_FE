@@ -8,7 +8,6 @@ interface SuccessModalProps {
 
 /**
  *
- * @param onClose - 모달을 닫는 함수
  * @param count - 요청 완료 건수
  * @returns
  */
@@ -24,7 +23,7 @@ const SuccessModal = ({ count }: SuccessModalProps) => {
           className="mb-[6px]"
         />
         <span className="h2 text-grayScale-900">{successType} 완료</span>
-        <div className="flex-col font-semibold center text-b2 text-grayScale-500">
+        <div className="flex-col center b2 text-grayScale-500">
           <div className="flex gap-[2px] items-center">
             {successType === "제출" ? "세금 계산서" : "CSV 파일에 세금 계산서"}
             <Tag text={`${count}건`} />

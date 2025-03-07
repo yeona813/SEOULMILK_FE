@@ -55,7 +55,7 @@ const VerifyTableItem = ({
           onChange={(e) => onCheckChange(e.target.checked)}
         />
       </div>
-      <div className="w-[39px]">{formattedNumber}</div>
+      <div className="w-[39px] 3xl:w-[50px]">{formattedNumber}</div>
       <div className="w-[79px]">
         {newly && (
           <div className="w-[47px] text-center text-warning-500 bg-warning-50 border-warning-300 border border-solid h-6 rounded">
@@ -63,10 +63,11 @@ const VerifyTableItem = ({
           </div>
         )}
       </div>
-      <div className="w-[336px]">{supplier}</div>
-      <div className="w-[336px]">{retailer}</div>
-      <div className="w-[174px]">{date}</div>
-      <div className="w-[164px]">{formattedAmount}</div> {/* 수정된 부분 */}
+      <div className="w-[336px] 3xl:w-[400px]">{supplier}</div>
+      <div className="w-[300px] 3xl:w-[400px]">{retailer}</div>
+      <div className="w-[174px] 3xl:w-[250px]">{date}</div>
+      <div className="w-[164px] 3xl:w-[250px]">{formattedAmount}</div>{" "}
+      {/* 수정된 부분 */}
       <div className="w-[53px] flex items-center">
         {validationResult ? (
           <div className="w-[47px] text-center text-secondary-500 bg-secondary-25 border-secondary-200 border border-solid h-6 rounded">

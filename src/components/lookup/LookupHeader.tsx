@@ -8,8 +8,8 @@ interface LookupHeaderProps {
 const LookupHeader = ({ total }: LookupHeaderProps) => {
   const { openSuccessSubmit } = useModalStore();
   return (
-    <div className="w-full">
-      <h1 className="h1 text-grayScale-900">세금 계산서</h1>
+    <div className="w-[1240px] 3xl:w-[1560px] mt-[37px]">
+      <h1 className="h1 text-grayScale-900">계산서 통합 조회</h1>
       <div className="flex mt-[6px] justify-between items-end">
         <div className="flex gap-[10px] items-center">
           <span className="b3 text-grayScale-700">전체 {total}건</span>

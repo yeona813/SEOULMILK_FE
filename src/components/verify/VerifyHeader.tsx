@@ -4,7 +4,7 @@ import Picker from "../common/control/Picker";
 
 const VerifyHeader = () => {
   return (
-    <div className="w-full">
+    <div className="w-[1240px] 3xl:w-[1560px] mt-[37px]">
       <h1 className="h1 text-grayScale-900">세금 계산서</h1>
       <div className="mt-[6px] flex justify-between">
         <div className="flex items-end gap-2">

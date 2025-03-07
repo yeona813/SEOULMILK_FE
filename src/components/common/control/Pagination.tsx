@@ -35,7 +35,7 @@ const Pagination = ({ totalPage }: PaginationProps) => {
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="fixed bottom-0 left-[240px] w-[calc(100%-240px)] gap-2 center py-2 px-[30px] border-t border-t-grayScale-200 bg-white">
       {totalPage > 5 && (
         <button onClick={jumpBackward} disabled={currentPage === 1}>
           <img src="/assets/icons/doubleLeftArrow.svg" alt="doubleLeftArrow" />

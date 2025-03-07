@@ -86,9 +86,13 @@ module.exports = {
           700: "#CF8300",
         },
       },
+      screens: {
+        "3xl": "1920px",
+      },
     },
   },
   plugins: [
+    require("tailwind-scrollbar-hide"),
     plugin(function ({ addUtilities }) {
       const newUtilities = {
         // Header Styles

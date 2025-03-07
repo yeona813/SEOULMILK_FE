@@ -11,6 +11,8 @@ interface ModalState {
   saveCheckType: "삭제" | "제출" | null;
   isSuccessSubmit: boolean;
   successType: "저장" | "제출" | null;
+  isSuccessText: boolean;
+  successTextType: "사원 등록" | "대리점 등록" | "저장" | "삭제" | null;
 
   openUpload: () => void;
   closeUpload: () => void;
@@ -35,6 +37,11 @@ interface ModalState {
 
   openSuccessSubmit: (type: "저장" | "제출") => void;
   closeSuccessSubmit: () => void;
+
+  openSuccessText: (
+    type: "사원 등록" | "대리점 등록" | "저장" | "삭제"
+  ) => void;
+  closeSuccessText: () => void;
 }
 
 const useModalStore = create<ModalState>((set) => ({
@@ -48,6 +55,8 @@ const useModalStore = create<ModalState>((set) => ({
   isSaveCheckOpen: false,
   saveCheckType: null,
   isSuccessSubmit: false,
+  isSuccessText: false,
+  successTextType: null,
 
   openUpload: () => set((state) => ({ ...state, isUploadOpen: true })),
   closeUpload: () => set((state) => ({ ...state, isUploadOpen: false })),
@@ -76,6 +85,10 @@ const useModalStore = create<ModalState>((set) => ({
     set((state) => ({ ...state, isSuccessSubmit: true, successType: type })),
   closeSuccessSubmit: () =>
     set((state) => ({ ...state, isSuccessSubmit: false })),
+
+  openSuccessText: (type) =>
+    set((state) => ({ ...state, isSuccessText: true, successTextType: type })),
+  closeSuccessText: () => set((state) => ({ ...state, isSuccessText: false })),
 }));
 
 export default useModalStore;

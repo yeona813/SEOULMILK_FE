@@ -3,6 +3,10 @@ import EmployeeNumberInput from "../common/input/EmployeeNumberInput";
 import PasswordInput from "../common/input/PasswordInput";
 import ErrorMessages from "./ErrorMessage";
 import UserPicker from "../common/control/UserPicker";
+import { postEmployeeLogin } from "@/api/employee";
+import { useUserStore } from "@/stores/useUserStore";
+import { postAgencyLogin } from "@/api/agency";
+import { useNavigate } from "react-router-dom";
 
 interface FormValues {
   employeeNumber: string;
@@ -10,6 +14,9 @@ interface FormValues {
 }
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+  const { role } = useUserStore();
+
   const methods = useForm<FormValues>({
     mode: "onChange",
     defaultValues: {
@@ -18,8 +25,27 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data);
+  const onSubmit = async (data: FormValues) => {
+    let accessToken: string | null = null;
+
+    if (role === "admin") {
+      console.log("해야함");
+    } else if (role === "dealership") {
+      accessToken = await postAgencyLogin(data.employeeNumber, data.password);
+    } else {
+      accessToken = await postEmployeeLogin(data.employeeNumber, data.password);
+    }
+
+    if (accessToken) {
+      localStorage.setItem("accessToken", accessToken);
+      if (role === "admin") {
+        navigate("/addUser");
+      } else if (role === "dealership") {
+        navigate("/submit");
+      } else {
+        navigate("/verify");
+      }
+    }
   };
 
   return (

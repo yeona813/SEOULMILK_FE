@@ -11,12 +11,12 @@ const SubmitHeader = ({ total }: SubmitHeaderProps) => {
   const { openUpload, openSaveCheck } = useModalStore();
 
   return (
-    <div className="w-full">
+    <div className="w-[1240px] 3xl:w-[1560px] mt-[37px]">
       <h1 className="flex justify-start h1 text-grayScale-900">
         세금 계산서 제출
       </h1>
-      <div className="flex items-center justify-between w-full">
-        <div className="flex gap-[10px]">
+      <div className="flex items-end justify-between w-full mt-[6px]">
+        <div className="flex gap-[10px] items-center">
           <span className="b3 text-grayScale-700">전체 {total}건</span>
           <span
             className="b3 text-grayScale-400 rounded-2xl hover:bg-grayScale-100 px-3 py-[2px] hover:text-grayScale-600"
