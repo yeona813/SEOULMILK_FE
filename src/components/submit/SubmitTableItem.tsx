@@ -41,7 +41,7 @@ const SubmitTableItem = ({
 
   return (
     <div
-      className={`flex items-center h-10 mt-[6px] mx-[7px] text-grayScale-700 b4 rounded-lg ${rowClass}`}
+      className={`flex items-center h-10 mt-[6px] mx-[7px] text-grayScale-700 b4 rounded-lg ${rowClass} hover:bg-grayScale-50`}
     >
       <div className="w-[33px] center mr-2">
         <CheckBox

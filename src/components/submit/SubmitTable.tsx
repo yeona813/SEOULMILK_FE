@@ -117,7 +117,7 @@ const SubmitTable = () => {
   };
 
   return (
-    <div className="relative w-[1240px] 3xl:w-[1560px] h-[597px] 3xl:h-[644px] border border-solid border-grayScale-200 rounded bg-white overflow-y-auto overflow-x-hidden mb-[49px]">
+    <div className="w-[1240px] 3xl:w-[1560px] h-[597px] 3xl:h-[644px] border border-solid border-grayScale-200 rounded bg-white overflow-y-auto overflow-x-hidden mb-[49px]">
       {/* 헤더 */}
       <div className="sticky top-0 flex flex-wrap h-10 text-left bg-white border-b border-solid border-grayScale-200 b5 text-grayScale-500">
         <div className="w-[34px] ml-[15px] flex items-center">
@@ -155,6 +155,17 @@ const SubmitTable = () => {
           ))}
         </div>
       </div>
+      {selectAll && (
+        <div className="absolute top-[43px] left-1/2 transform -translate-x-1/2 flex px-5 py-[9px] bg-white rounded-xl shadow-[0px_3px_15px_0px_rgba(0,0,0,0.10),_0px_10px_30px_8px_rgba(0,0,0,0.05)] items-center">
+          <img src="/assets/icons/info.svg" alt="info" className="mr-[6px]" />
+          <p className="mr-2 b4 text-grayScale-700">
+            이 페이지 있는 항목 {tableData.length}건이 모두 선택되었습니다.
+          </p>
+          <p className="b3 text-secondary-500">
+            전체 {tableData.length}건 모두 선택
+          </p>
+        </div>
+      )}
     </div>
   );
 };

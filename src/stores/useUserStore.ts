@@ -5,8 +5,12 @@ export type Role = "headquarters" | "dealership" | "admin";
 interface UserState {
   role: Role;
   name: string;
+  id: string;
+  email: string;
   setUser: (user: Partial<UserState>) => void;
   setRole: (role: Role) => void; // Renamed to setRole for clarity
+  setId: (id: string) => void;
+  setEmail: (email: string) => void;
   getDisplayName: () => string;
 }
 
@@ -24,10 +28,14 @@ const getRoleDisplayName = (role: Role, name: string): string => {
 };
 
 export const useUserStore = create<UserState>((set, get) => ({
-  role: "headquarters",
-  name: "안연아",
+  role: "dealership",
+  name: "",
+  id: "",
+  email: "",
   setUser: (user) => set((state) => ({ ...state, ...user })),
   setRole: (role) => set({ role }),
+  setId: (id) => set({ id }),
+  setEmail: (email) => set({ email }),
   getDisplayName: () => {
     const { role, name } = get();
     return getRoleDisplayName(role, name);

@@ -1,8 +1,31 @@
 import { create } from "zustand";
 
+export interface OCRFile {
+  success: boolean;
+  memberId: number;
+  agencyId: number;
+  ntsTaxId: number;
+  issueId: string;
+  issueDate: string;
+  suId: string;
+  suName: string;
+  ipId: string;
+  ipName: string;
+  grandTotal: string;
+  chargeTotal: string;
+  taxTotal: string;
+  imageUrl: string;
+}
+
+interface OCRData {
+  failedCnt: number;
+  successCnt: number;
+  totalCnt: 2;
+  ocrNtsTaxList: OCRFile[];
+}
+
 interface ModalState {
   isUploadOpen: boolean;
-  isProcessingOpen: boolean;
   isConvertOpen: boolean;
   isSuccessOpen: boolean;
   isFailOpen: boolean;
@@ -13,12 +36,10 @@ interface ModalState {
   successType: "저장" | "제출" | null;
   isSuccessText: boolean;
   successTextType: "사원 등록" | "대리점 등록" | "저장" | "삭제" | null;
+  ocrData: OCRData | null;
 
   openUpload: () => void;
   closeUpload: () => void;
-
-  openProcessing: () => void;
-  closeProcessing: () => void;
 
   openConvert: () => void;
   closeConvert: () => void;
@@ -42,11 +63,12 @@ interface ModalState {
     type: "사원 등록" | "대리점 등록" | "저장" | "삭제"
   ) => void;
   closeSuccessText: () => void;
+
+  setOCRData: (data: OCRData) => void;
 }
 
 const useModalStore = create<ModalState>((set) => ({
   isUploadOpen: false,
-  isProcessingOpen: false,
   isConvertOpen: false,
   isSuccessOpen: false,
   successType: null,
@@ -57,13 +79,10 @@ const useModalStore = create<ModalState>((set) => ({
   isSuccessSubmit: false,
   isSuccessText: false,
   successTextType: null,
+  ocrData: null,
 
   openUpload: () => set((state) => ({ ...state, isUploadOpen: true })),
   closeUpload: () => set((state) => ({ ...state, isUploadOpen: false })),
-
-  openProcessing: () => set((state) => ({ ...state, isProcessingOpen: true })),
-  closeProcessing: () =>
-    set((state) => ({ ...state, isProcessingOpen: false })),
 
   openConvert: () => set((state) => ({ ...state, isConvertOpen: true })),
   closeConvert: () => set((state) => ({ ...state, isConvertOpen: false })),
@@ -89,6 +108,8 @@ const useModalStore = create<ModalState>((set) => ({
   openSuccessText: (type) =>
     set((state) => ({ ...state, isSuccessText: true, successTextType: type })),
   closeSuccessText: () => set((state) => ({ ...state, isSuccessText: false })),
+
+  setOCRData: (data) => set((state) => ({ ...state, ocrData: data })),
 }));
 
 export default useModalStore;

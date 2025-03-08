@@ -16,7 +16,6 @@ interface FormValues {
 const LoginForm = () => {
   const navigate = useNavigate();
   const { role } = useUserStore();
-
   const methods = useForm<FormValues>({
     mode: "onChange",
     defaultValues: {
@@ -31,13 +30,20 @@ const LoginForm = () => {
     if (role === "admin") {
       console.log("해야함");
     } else if (role === "dealership") {
-      accessToken = await postAgencyLogin(data.employeeNumber, data.password);
+      accessToken = await postAgencyLogin(
+        data.employeeNumber,
+        data.password,
+        role
+      );
     } else {
-      accessToken = await postEmployeeLogin(data.employeeNumber, data.password);
+      accessToken = await postEmployeeLogin(
+        data.employeeNumber,
+        data.password,
+        role
+      );
     }
 
     if (accessToken) {
-      localStorage.setItem("accessToken", accessToken);
       if (role === "admin") {
         navigate("/addUser");
       } else if (role === "dealership") {
@@ -57,7 +63,7 @@ const LoginForm = () => {
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-4 mb-[17px]">
             <EmployeeNumberInput />
-            <PasswordInput />
+            {!(role === "admin") && <PasswordInput />}
           </div>
           <ErrorMessages />
           <div className="mt-[18px] flex flex-col gap-4">
@@ -72,9 +78,33 @@ const LoginForm = () => {
             >
               로그인
             </button>
-            <button className="w-full text-grayScale-400 b2">
-              비밀번호 재설정
-            </button>
+            {role === "headquarters" && (
+              <button className="w-full text-grayScale-400 b2">
+                비밀번호 재설정
+              </button>
+            )}
+            {role === "dealership" && (
+              <div className="text-center text-grayScale-400 b2">
+                <div className="flex items-center gap-3">
+                  <button className="w-[126px]" type="button">
+                    회원가입{" "}
+                  </button>{" "}
+                  <div className="w-[0.5px] h-4 bg-gray-400" />
+                  <button className="w-[126px]" type="button">
+                    아이디 찾기{" "}
+                  </button>{" "}
+                  <div className="w-[0.5px] h-4 bg-gray-400" />
+                  <button className="w-[126px]" type="button">
+                    비밀번호 재설정
+                  </button>
+                </div>
+              </div>
+            )}
+            {role === "admin" && (
+              <div className="text-center text-grayScale-400 b2">
+                마스터키는 관리자에게만 발급됩니다. 본사에 문의하세요.
+              </div>
+            )}
           </div>
         </form>
       </FormProvider>
