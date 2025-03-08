@@ -1,9 +1,19 @@
 import { useState } from "react";
 import CheckBox from "../common/control/CheckBox";
 import VerifyTableItem from "./VerifyTableItem";
+import VerifyDrawer from "./VerifyDrawer";
 
-// 테스트 데이터 배열
-const tableData = [
+interface ItemData {
+  number: number;
+  supplier: string;
+  retailer: string;
+  date: string;
+  amount: number;
+  validationResult: boolean;
+  newly: boolean;
+}
+
+const tableData: ItemData[] = [
   {
     number: 1,
     supplier: "서울우유 대전 대리점",
@@ -124,18 +134,23 @@ const tableData = [
 ];
 
 const VerifyTable = () => {
-  const [selectAll, setSelectAll] = useState<boolean>(false); // 전체 체크박스 상태
+  const [selectAll, setSelectAll] = useState<boolean>(false);
   const [checkedItems, setCheckedItems] = useState<boolean[]>(
     new Array(tableData.length).fill(false)
-  ); // 개별 체크박스 상태 배열
+  );
+  const [selectedItem, setSelectedItem] = useState<ItemData | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // 전체 체크박스 클릭 시 처리 함수
-  const handleSelectAll = (checked: boolean) => {
-    setSelectAll(checked);
-    setCheckedItems(new Array(tableData.length).fill(checked)); // 모든 항목 체크/해제
+  const handleItemClick = (item: ItemData) => {
+    setSelectedItem(item);
+    setDrawerOpen(true);
   };
 
-  // 개별 아이템 체크박스 상태 변경 함수
+  const handleSelectAll = (checked: boolean) => {
+    setSelectAll(checked);
+    setCheckedItems(new Array(tableData.length).fill(checked));
+  };
+
   const handleItemCheck = (index: number, checked: boolean) => {
     const updatedCheckedItems = [...checkedItems];
     updatedCheckedItems[index] = checked;
@@ -180,11 +195,17 @@ const VerifyTable = () => {
               date={item.date}
               amount={item.amount}
               validationResult={item.validationResult}
-              onCheckChange={(checked) => handleItemCheck(index, checked)} // 항목 체크 변경 처리
+              onCheckChange={(checked) => handleItemCheck(index, checked)}
+              onClick={() => handleItemClick(item)}
             />
           ))}
         </div>
       </div>
+      <VerifyDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        data={selectedItem}
+      />
     </div>
   );
 };

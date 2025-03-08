@@ -10,6 +10,7 @@ interface VerifyTableItemProps {
   amount: number;
   validationResult: boolean;
   onCheckChange: (checked: boolean) => void;
+  onClick: () => void;
 }
 
 /**
@@ -36,6 +37,7 @@ const VerifyTableItem = ({
   amount,
   validationResult,
   onCheckChange,
+  onClick,
 }: VerifyTableItemProps) => {
   const formattedNumber = number.toString().padStart(3, "0");
 
@@ -45,15 +47,21 @@ const VerifyTableItem = ({
   // 배경색을 선택 상태에 따라 다르게 설정
   const rowClass = check ? "bg-grayScale-100" : "";
 
+  const handleCheckboxClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+  };
+
+  // 체크박스 상태 변경 처리
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onCheckChange(event.target.checked);
+  };
   return (
     <div
-      className={`flex items-center h-10 mt-[6px] mx-[7px] text-grayScale-700 b4 rounded-lg ${rowClass}`}
+      className={`flex items-center h-10 mt-[6px] mx-[7px] text-grayScale-700 b4 rounded-lg ${rowClass} group hover:bg-grayScale-100 `}
+      onClick={onClick}
     >
-      <div className="w-[33px] center mr-2">
-        <CheckBox
-          checked={check}
-          onChange={(e) => onCheckChange(e.target.checked)}
-        />
+      <div className="w-[33px] center mr-2" onClick={handleCheckboxClick}>
+        <CheckBox checked={check} onChange={handleCheckboxChange} />
       </div>
       <div className="w-[39px] 3xl:w-[50px]">{formattedNumber}</div>
       <div className="w-[79px]">
