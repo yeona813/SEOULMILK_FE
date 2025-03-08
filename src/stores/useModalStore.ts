@@ -25,6 +25,7 @@ interface OCRData {
 }
 
 interface ModalState {
+  isInvoiceViewOpen: boolean;
   isUploadOpen: boolean;
   isConvertOpen: boolean;
   isSuccessOpen: boolean;
@@ -68,6 +69,7 @@ interface ModalState {
 }
 
 const useModalStore = create<ModalState>((set) => ({
+  isInvoiceViewOpen: false,
   isUploadOpen: false,
   isConvertOpen: false,
   isSuccessOpen: false,
@@ -80,6 +82,9 @@ const useModalStore = create<ModalState>((set) => ({
   isSuccessText: false,
   successTextType: null,
   ocrData: null,
+
+  openInvoiceView: () => set((state) => ({ ...state, isInvoiceViewOpen: true })),
+  closeInvoiceView: () => set((state) => ({ ...state, isInvoiceViewOpen: false })),
 
   openUpload: () => set((state) => ({ ...state, isUploadOpen: true })),
   closeUpload: () => set((state) => ({ ...state, isUploadOpen: false })),

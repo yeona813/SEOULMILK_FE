@@ -16,6 +16,11 @@ interface FormValues {
 const LoginForm = () => {
   const navigate = useNavigate();
   const { role } = useUserStore();
+  
+  function updateAccessToken(newAccessToken: string) {
+    localStorage.removeItem("accessToken");
+    localStorage.setItem("accessToken", newAccessToken);
+  }
   const methods = useForm<FormValues>({
     mode: "onChange",
     defaultValues: {
@@ -44,6 +49,8 @@ const LoginForm = () => {
     }
 
     if (accessToken) {
+      updateAccessToken(accessToken);
+
       if (role === "admin") {
         navigate("/addUser");
       } else if (role === "dealership") {
