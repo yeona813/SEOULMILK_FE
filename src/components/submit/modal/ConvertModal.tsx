@@ -4,7 +4,7 @@ import StatusBadge from "@/components/common/control/StatusBadge";
 import Button from "@/components/common/button/Button";
 import useModalStore from "@/stores/useModalStore";
 
-//@TODO 성공, 실패, 제외 API 연동 시 count 값 수정해야 함!
+//@TODO 성공, 실패, 합계 API 연동 시 count 값 수정해야 함!
 
 const ConvertModal = () => {
   const { closeConvert, openFail, openSuccess, ocrData } = useModalStore();
@@ -19,7 +19,7 @@ const ConvertModal = () => {
           <div className="gap-8 center mb-[44px]">
             <StatusBadge status="성공" count={ocrData?.successCnt || 0} />
             <StatusBadge status="실패" count={ocrData?.failedCnt || 0} />
-            <StatusBadge status="제외" count={ocrData?.totalCnt || 0} />
+            <StatusBadge status="합계" count={ocrData?.totalCnt || 0} />
           </div>
         </div>
         <div className="flex w-full gap-5">

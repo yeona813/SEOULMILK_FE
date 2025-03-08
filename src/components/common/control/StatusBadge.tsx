@@ -1,11 +1,11 @@
 interface StatusBadgeProps {
-  status: "성공" | "실패" | "제외";
+  status: "성공" | "실패" | "합계";
   count: number;
 }
 
 /**
  *
- * @param status - "성공" | "실패" | "제외"
+ * @param status - "성공" | "실패" | "합계계"
  * @param count - status의 건수
  * @returns
  */
@@ -13,7 +13,7 @@ const StatusBadge = ({ status, count }: StatusBadgeProps) => {
   const statusStyles = {
     성공: "bg-secondary-25 text-secondary-500",
     실패: "bg-primary-50 text-primary-500",
-    제외: "bg-grayScale-50 text-grayScale-500",
+    합계: "bg-grayScale-50 text-grayScale-500",
   };
 
   return (
