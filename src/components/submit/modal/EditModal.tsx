@@ -103,8 +103,36 @@ const EditModal = () => {
               </span>
               /{ocrData?.failedCnt}건
             </p>
-            <div className="w-[600px] h-[373px] rounded-lg border border-grayScale-200 bg-grayScale-25 mt-2">
-              사진
+            <div className="w-[600px] h-[373px] rounded-lg border border-grayScale-200 bg-grayScale-25 mt-2 center">
+              {selectedFile ? (
+                (() => {
+                  const fileUrl = failFile?.find(
+                    (file) => file.ntsTaxId === selectedFile
+                  )?.imageUrl;
+                  return fileUrl ? (
+                    fileUrl.endsWith(".pdf") ? (
+                      <iframe
+                        src={fileUrl}
+                        className="w-full h-full rounded-lg"
+                      ></iframe>
+                    ) : (
+                      <img
+                        src={fileUrl}
+                        alt="OCR 이미지"
+                        className="object-contain w-full h-full rounded-lg"
+                      />
+                    )
+                  ) : (
+                    <span className="text-grayScale-400">
+                      이미지를 선택해주세요
+                    </span>
+                  );
+                })()
+              ) : (
+                <span className="text-grayScale-400">
+                  이미지를 선택해주세요
+                </span>
+              )}
             </div>
           </div>
 
