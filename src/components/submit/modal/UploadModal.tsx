@@ -1,6 +1,7 @@
 import { postNtsTaxUpload } from "@/api/ntsTax";
 import Button from "@/components/common/button/Button";
 import DeleteButton from "@/components/common/button/DeleteButton";
+import LoadingSpinner from "@/components/common/control/LoadingSpinner";
 import Modal from "@/components/common/modal/Modal";
 import useModalStore from "@/stores/useModalStore";
 import React, { useRef, useState } from "react";
@@ -57,7 +58,8 @@ const UploadModal = ({ fetchData }: UploadModalProps) => {
   return (
     <Modal onClose={closeUpload}>
       {isUploading ? (
-        <div className="center flex-col w-[590px]">
+        <div className="center flex-col w-[590px] gap-4">
+          <LoadingSpinner />
           <div className="text-center h2 text-grayScale-900">
             세금 계산서를 텍스트로
             <br /> 변환하고 있어요

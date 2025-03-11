@@ -1,6 +1,6 @@
 export interface NtsTax {
   isSuccess?: string | null;
-  ntsTaxId: number;
+  ntsTaxId?: number;
   issueId: string;
   issueDate: string;
   suId: string;
@@ -10,4 +10,8 @@ export interface NtsTax {
   grandTotal: string;
   chargeTotal: string;
   taxTotal: string;
+  ar?: string;
+  createdAt?: string;
+  createdTime?: string;
+  imageUrl?: string;
 }

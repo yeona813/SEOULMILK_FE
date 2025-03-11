@@ -53,22 +53,24 @@ export const postNtsTaxUpload = async (files: FormData) => {
 };
 
 /**
- * 대리점 - 세금 계산서 수정정
+ * 대리점 - 세금 계산서 수정
  *
  * @param data
  * @returns
  */
-export const putNtsTaxEdit = async (data: NtsTax) => {
+export const putNtsTaxEdit = async (ntsTaxId: number, data: NtsTax) => {
   try {
     const accessToken = localStorage.getItem("accessToken");
 
-    const response = await api.put("/agency/nts-tax/edit", data, {
+    const response = await api.put(`/agency/nts-tax/${ntsTaxId}`, data, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
 
-    return response.data;
+    if (response.data) {
+      return response.data.success;
+    }
   } catch (error) {
     console.error("파일 업로드 실패:", error);
   }

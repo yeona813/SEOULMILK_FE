@@ -1,8 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import CheckBox from "../common/control/CheckBox";
 import SubmitTableItem from "./SubmitTableltem";
 import { NtsTax } from "@/types/ntsTax";
 import Tag from "../common/notification/Tag";
+import SubmitDrawer from "./drawer/SubmitDrawer";
+import {
+  useEditDrawerStore,
+  useSubmitInvoiceStore,
+} from "@/stores/useSubmitDrawerStore";
 
 interface SubmitTabelProps {
   data: NtsTax[];
@@ -13,6 +18,8 @@ interface SubmitTabelProps {
   isSuccess: string;
   isAllChecked: boolean;
   setIsAllChecked: React.Dispatch<React.SetStateAction<boolean>>;
+  openInfo: boolean;
+  setOpenInfo: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SubmitTable = ({
@@ -24,8 +31,17 @@ const SubmitTable = ({
   inCorrectCount,
   isAllChecked,
   setIsAllChecked,
+  openInfo,
+  setOpenInfo,
 }: SubmitTabelProps) => {
-  const [openInfo, setOpenInfo] = useState(false);
+  const { isFailDrawerOpen, openFailDrawer } = useEditDrawerStore();
+  const { setSelectedItem } = useSubmitInvoiceStore();
+
+  const handleItemClick = (item: NtsTax) => {
+    setSelectedItem(item);
+    setSelectedItem(item);
+    openFailDrawer();
+  };
 
   const handleCheckChange = (checked: boolean, ntsTaxId: number) => {
     setCheckedItem((prev) =>
@@ -35,7 +51,7 @@ const SubmitTable = ({
 
   const handleAllCheckChange = (checked: boolean) => {
     if (checked) {
-      setCheckedItem(data.map((item) => item.ntsTaxId));
+      setCheckedItem(data.map((item) => item.ntsTaxId!));
       setIsAllChecked(true);
       setOpenInfo(true);
     } else {
@@ -44,10 +60,6 @@ const SubmitTable = ({
       setOpenInfo(false);
     }
   };
-
-  useEffect(() => {
-    console.log(checkedItem);
-  }, [checkedItem, isAllChecked]);
 
   useEffect(() => {
     setCheckedItem([]);
@@ -87,21 +99,23 @@ const SubmitTable = ({
           {/* 테이블 항목 반복 */}
 
           {data.length > 0 ? (
-            data.map((item, index) => (
-              <div className="w-[1220x] 3xl:w-[1560px] mb-[6px]">
+            data.map((item) => (
+              <div
+                className="w-[1220x] 3xl:w-[1560px] mb-[6px]"
+                key={item.ntsTaxId}
+              >
                 <SubmitTableItem
-                  key={index}
-                  check={checkedItem.includes(item.ntsTaxId)}
-                  number={item.ntsTaxId}
+                  check={checkedItem.includes(item.ntsTaxId!)}
+                  number={item.ntsTaxId!}
                   supplier={item.suName}
                   retailer={item.ipName}
                   date={item.issueDate}
                   amount={item.grandTotal}
                   validationResult={item.isSuccess === "SUCCESS"}
                   onCheckChange={(checked) =>
-                    handleCheckChange(checked, item.ntsTaxId)
+                    handleCheckChange(checked, item.ntsTaxId!)
                   }
-                  onClick={() => console.log(`Clicked item ${item.ntsTaxId}`)}
+                  onClick={() => handleItemClick(item)}
                 />
               </div>
             ))
@@ -162,6 +176,7 @@ const SubmitTable = ({
           )}
         </div>
       )}
+      {isFailDrawerOpen && isSuccess === "FAILED" && <SubmitDrawer />}
     </>
   );
 };
