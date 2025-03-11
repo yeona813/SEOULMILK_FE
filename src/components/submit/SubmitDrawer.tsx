@@ -1,172 +1,134 @@
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import NotiMessage from "../common/notification/NotiMessage";
+import Drawer from "../drawer/Drawer";
+import { useState } from "react";
 
-interface SubmitDrawerProps {
-  open: boolean;
-  onClose: () => void;
-  data: {
-    number: number;
-    supplier: string;
-    retailer: string;
-    date: string;
-    amount: number;
-    validationResult: boolean;
-  } | null;
-}
+import EditableInvoiceDetails from "../verify/EditableInvoiceDetails";
+import {
+  useEditDrawerStore,
+  useSubmitInvoiceStore,
+} from "@/stores/useSubmitDrawerStore";
+import Button from "../common/button/Button";
+import InvoiceDetail from "./InvoiceDetail";
 
-export default function SubmitDrawer({
-  open,
-  onClose,
-  data,
-}: SubmitDrawerProps) {
-  const DrawerContent = () => {
-    if (!data) return <div>No data available.</div>;
+const SubmitDrawer = () => {
+  const [isEdit, setIsEdit] = useState(false);
+  const { isFailDrawerOpen, closeFailDrawer } = useEditDrawerStore();
+  const { selectedItem } = useSubmitInvoiceStore();
 
-    const formattedNumber = data.number.toString().padStart(3, "0");
-
-    return (
-      <Box onClick={(event) => event.stopPropagation()}>
-        <div className="flex-col pt-[146px] center">
-          <div className="w-[421px]">
-            <div>
-              <div className="text-grayScale-400 b2">{formattedNumber}</div>
-              <div className="h2">{data.supplier}</div>
-              <div className="h2">{data.retailer}</div>
-            </div>
-            <div className="mt-10">
-              <NotiMessage
-                type="success"
-                text="홈택스 검증결과, 발급된 사실이 있습니다. "
-              />
-            </div>
-            <div className="flex items-center justify-center mt-4">
-              <table className="w-full bg-white border border-solid rounded-lg border-grayScale-200 ">
-                <tbody className="bg-white ">
-                  <tr>
-                    <td className="w-[130px] pr-[26px] pl-[18px] pt-[7px] pb-[8px] h-[28px] text-left b5 text-grayScale-600  whitespace-nowrap">
-                      승인번호
-                    </td>
-                    <td className="text-grayScale-500 b5 whitespace-nowrap bg-grayScale-25 pl-[17px]">
-                      20240680-41000005-78475918
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="w-[130px] pr-[26px] pl-[18px]  pb-[8px] h-[28px] text-left b5 text-grayScale-600  whitespace-nowrap">
-                      전자세금계산서 작성일자
-                    </td>
-                    <td className="text-grayScale-500 b5 whitespace-nowrap bg-grayScale-25 pl-[17px]">
-                      2024.06.30
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="w-[130px] pr-[26px] pl-[18px]  pb-[8px] h-[28px] text-left b5 text-grayScale-600  whitespace-nowrap">
-                      공급자 사업등록번호
-                    </td>
-                    <td className="text-grayScale-500 b5 whitespace-nowrap bg-grayScale-25 pl-[17px]">
-                      306-28-70320
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="w-[130px] pl-[18px] pr-[26px] pb-[8px] h-[28px] text-left b5 text-grayScale-600  ">
-                      공급 받는자 사업자등록번호
-                    </td>
-                    <td className="text-grayScale-500 b5 whitespace-nowrap bg-grayScale-25 pl-[17px]">
-                      308-85-09085
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="w-[130px] pl-[18px] pr-[26px] pb-[8px] h-[28px] text-left b5 text-grayScale-600  whitespace-nowrap">
-                      합계금액
-                    </td>
-                    <td className="text-grayScale-500 b5 whitespace-nowrap bg-grayScale-25 pl-[17px]">
-                      23,930,493
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div className="mt-2 b5 text-secondary-500">
-              *홈택스로 검증한 필수데이터입니다.
-            </div>
-
-            <div className="flex items-center justify-center mt-10">
-              <table className="w-full bg-white border border-solid rounded-lg border-grayScale-200 ">
-                <tbody className="bg-white ">
-                  <tr>
-                    <td className="w-[130px] pr-[26px] pl-[18px] pt-[7px] pb-[8px] h-[28px] text-left b5 text-grayScale-600  whitespace-nowrap">
-                      총세액 합계
-                    </td>
-                    <td className="text-grayScale-500 b5 whitespace-nowrap bg-grayScale-25 pl-[17px]">
-                      23,179,824
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="w-[130px] pr-[26px] pl-[18px]  pb-[8px] h-[28px] text-left b5 text-grayScale-600  whitespace-nowrap">
-                      합계금액
-                    </td>
-                    <td className="text-grayScale-500 b5 whitespace-nowrap bg-grayScale-25 pl-[17px]">
-                      26,323,542
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="w-[130px] pr-[26px] pl-[18px]  pb-[8px] h-[28px] text-left b5 text-grayScale-600  whitespace-nowrap">
-                      매출매입구분
-                    </td>
-                    <td className="text-grayScale-500 b5 whitespace-nowrap bg-grayScale-25 pl-[17px]">
-                      AR
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="w-[130px] pl-[18px] pr-[26px] pb-[8px] h-[28px] text-left b5 text-grayScale-600  ">
-                      생성일
-                    </td>
-                    <td className="text-grayScale-500 b5 whitespace-nowrap bg-grayScale-25 pl-[17px]">
-                      2025.02.22
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="w-[130px] pl-[18px] pr-[26px] pb-[8px] h-[28px] text-left b5 text-grayScale-600  whitespace-nowrap">
-                      생성시간
-                    </td>
-                    <td className="text-grayScale-500 b5 whitespace-nowrap bg-grayScale-25 pl-[17px]">
-                      13:00
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div className="mt-2 b5 text-secondary-500">
-              *잠깐! 잘 옮겨졌는지 확인해주세요.
-            </div>
-
-            <div className="mt-[30px] text-secondary-500 b3 bg-secondary-25 border border-solid border-secondary-200 w-[143px] h-8 center gap-1 rounded-2xl">
-              <img src="/assets/icons/picture.svg" alt="계산서 원본 보기" />
-              계산서 원본 보기
-            </div>
-          </div>
-        </div>
-      </Box>
-    );
+  const handleInputChange = (field: "suName" | "ipName", value: string) => {
+    console.log(field, value);
   };
 
+  const handleEdit = () => {
+    setIsEdit(!isEdit);
+  };
+
+  const handleSave = async () => {
+    try {
+      setIsEdit(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  if (!selectedItem) return <p>데이터가 없습니다.</p>;
+
+  const formattedNumber = selectedItem.ntsTaxId.toString().padStart(3, "0");
+  const fileType = selectedItem.imageUrl.endsWith(".pdf") ? "pdf" : "image";
+
   return (
-    <div>
-      <Drawer
-        anchor="right"
-        open={open}
-        onClose={onClose}
-        ModalProps={{
-          keepMounted: true, // Better open performance on mobile
-          BackdropProps: {
-            onClick: onClose, // Handle clicks on the backdrop
-          },
-        }}
+    <Drawer onClose={closeFailDrawer}>
+      <div
+        className={`flex-col h-screen center drawer ${isFailDrawerOpen ? "open" : ""} relative`}
       >
-        <Box sx={{ width: 479 }} role="presentation">
-          {DrawerContent()}
-        </Box>
-      </Drawer>
-    </div>
+        <div className="absolute w-[784px] p-3 center flex-col h-[562px] gap-[10px] -left-[820px] bg-white rounded-[14px]">
+          {fileType === "image" ? (
+            <div className="h-[500px] w-full border border-solid border-grayScale-300 rounded-md">
+              <img
+                src={selectedItem.imageUrl}
+                alt="Document"
+                className="w-full h-full rounded-md cover"
+              />
+            </div>
+          ) : (
+            <div>
+              <object
+                data={selectedItem.imageUrl}
+                type="application/pdf"
+                width="100%"
+                height="100%"
+              >
+                <p>
+                  Your browser does not support PDFs.{" "}
+                  <a href={selectedItem.imageUrl}>Download the PDF</a>.
+                </p>
+              </object>
+            </div>
+          )}
+        </div>
+        <div className="w-[421px]">
+          <div>
+            <div className="text-grayScale-400 b2">{formattedNumber}</div>
+            {isEdit ? (
+              <>
+                <input
+                  type="text"
+                  value={selectedItem.suName || ""}
+                  onChange={(e) => handleInputChange("suName", e.target.value)}
+                  className="w-full h-10 px-2 my-2 text-lg bg-white border border-gray-300 rounded focus:outline-none focus:border-secondary-500"
+                />
+                <input
+                  type="text"
+                  value={selectedItem.ipName || ""}
+                  onChange={(e) => handleInputChange("ipName", e.target.value)}
+                  className="w-full h-10 px-2 my-2 text-lg bg-white border border-gray-300 rounded focus:outline-none focus:border-secondary-500"
+                />
+              </>
+            ) : (
+              <>
+                <div
+                  className={`h2 ${!(selectedItem.suName === "") ? "" : "text-grayScale-300"}`}
+                >
+                  {!(selectedItem.suName === "")
+                    ? selectedItem.suName
+                    : "공급자명 OCR 실패"}
+                </div>
+                <div
+                  className={`h2 ${!(selectedItem.ipName === "") ? "" : "text-grayScale-300"}`}
+                >
+                  {!(selectedItem.ipName === "")
+                    ? selectedItem.ipName
+                    : "공급 받는자명 OCR 실패"}
+                </div>
+              </>
+            )}
+            {!isEdit ? (
+              <InvoiceDetail selectedItem={selectedItem} />
+            ) : (
+              <EditableInvoiceDetails />
+            )}
+          </div>
+          <div className="flex gap-2 mt-[14px]">
+            <Button
+              size="medium"
+              color="green"
+              onClick={isEdit ? handleSave : handleEdit}
+            >
+              <div className="exist-icon">
+                <img src="/assets/icons/edit.svg" alt="Edit" />
+                {isEdit ? "저장" : "편집"}
+              </div>
+            </Button>
+            <Button size="medium" color="black">
+              <div className="exist-icon">
+                <img src="/assets/icons/checkVerified.svg" alt="Verify" />
+                삭제
+              </div>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </Drawer>
   );
-}
+};
+
+export default SubmitDrawer;
