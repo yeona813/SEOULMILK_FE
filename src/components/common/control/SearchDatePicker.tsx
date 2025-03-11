@@ -4,7 +4,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/locale";
 import { format } from "date-fns";
 import "@/styles/SearchDatePicker.css";
-import Button from "../button/Button";
 
 interface CustomHeaderProps {
   date: Date;
@@ -24,7 +23,7 @@ const CustomHeader = ({ date, changeMonth }: CustomHeaderProps) => {
     <div className="flex center bg-inherit">
       <div className="w-[212px] flex items-center gap-11">
         <button onClick={handlePrevMonth}>
-          <div className="w-5 h-5 center rounded-full hover:bg-grayScale-50">
+          <div className="w-5 h-5 rounded-full center hover:bg-grayScale-50">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="6"
@@ -43,7 +42,7 @@ const CustomHeader = ({ date, changeMonth }: CustomHeaderProps) => {
         </button>
         <span className="b2 text-grayScale-600">{`${date.getFullYear()}년 ${date.getMonth() + 1}월`}</span>
         <button onClick={handleNextMonth}>
-          <div className="w-5 h-5 center rounded-full hover:bg-grayScale-50 ">
+          <div className="w-5 h-5 rounded-full center hover:bg-grayScale-50 ">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="6"
@@ -93,6 +92,7 @@ const SearchDatePicker = () => {
 
   const handleInputClick = () => {
     setIsOpen(true);
+    console.log(startDate);
   };
 
   return (
