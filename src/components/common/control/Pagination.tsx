@@ -1,11 +1,14 @@
-import { useState } from "react";
-
 interface PaginationProps {
   totalPage: number;
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
 }
 
-const Pagination = ({ totalPage }: PaginationProps) => {
-  const [currentPage, setCurrentPage] = useState(1);
+const Pagination = ({
+  totalPage,
+  currentPage,
+  setCurrentPage,
+}: PaginationProps) => {
   const visiblePageCount = 5;
 
   let startPage, endPage;
@@ -27,11 +30,11 @@ const Pagination = ({ totalPage }: PaginationProps) => {
   );
 
   const jumpBackward = () => {
-    setCurrentPage((prev) => Math.max(prev - 5, 1));
+    setCurrentPage(Math.max(currentPage - 5, 1));
   };
 
   const jumpForward = () => {
-    setCurrentPage((prev) => Math.min(prev + 5, totalPage));
+    setCurrentPage(Math.min(currentPage + 5, totalPage));
   };
 
   return (
@@ -42,7 +45,7 @@ const Pagination = ({ totalPage }: PaginationProps) => {
         </button>
       )}
       <button
-        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+        onClick={() => setCurrentPage(Math.max(currentPage - 1, 1))}
         disabled={currentPage === 1}
       >
         <img src="/assets/icons/leftArrow.svg" alt="leftArrow" />
@@ -61,7 +64,7 @@ const Pagination = ({ totalPage }: PaginationProps) => {
         </div>
       ))}
       <button
-        onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPage))}
+        onClick={() => setCurrentPage(Math.min(currentPage + 1, totalPage))}
         disabled={currentPage === totalPage}
       >
         <img src="/assets/icons/rightArrow.svg" alt="rightArrow" />

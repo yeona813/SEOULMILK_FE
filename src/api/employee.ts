@@ -28,14 +28,14 @@ export const postEmployeeLogin = async (
         id: memberId, // 'memberId'를 스토어의 'id' 필드로 매핑
         name,
         email,
-        role
+        role,
       });
 
       // 로컬 스토리지에 토큰 저장
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
 
-      return accessToken;
+      return true;
     } else {
       // 로그인 실패 처리
       console.error("Login failed:", response.data.message);

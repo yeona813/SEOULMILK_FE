@@ -1,172 +1,168 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CheckBox from "../common/control/CheckBox";
-import SubmitTableItem from "./SubmitTableItem";
+import SubmitTableItem from "./SubmitTableltem";
+import { NtsTax } from "@/types/ntsTax";
+import Tag from "../common/notification/Tag";
 
-// 테스트 데이터 배열
-const tableData = [
-  {
-    number: 1,
-    supplier: "서울우유 대전 대리점",
-    retailer: "부산 중구 갈매기 마트 서면점",
-    date: "2025.02.25",
-    amount: 9965000,
-  },
-  {
-    number: 2,
-    supplier: "롯데마트 서울역점",
-    retailer: "인천 미추홀구 청라 마트",
-    date: "2025.02.26",
-    amount: 12875000,
-  },
-  {
-    number: 3,
-    supplier: "GS25 서울 강남역점",
-    retailer: "대구 북구 하이마트",
-    date: "2025.02.27",
-    amount: 7450000,
-  },
-  {
-    number: 4,
-    supplier: "CU 동대문점",
-    retailer: "광주 서구 푸드마트",
-    date: "2025.02.28",
-    amount: 8900000,
-  },
-  {
-    number: 5,
-    supplier: "CU 동대문점",
-    retailer: "광주 서구 푸드마트",
-    date: "2025.02.28",
-    amount: 8900000,
-  },
-  {
-    number: 6,
-    supplier: "CU 동대문점",
-    retailer: "광주 서구 푸드마트",
-    date: "2025.02.28",
-    amount: 8900000,
-  },
-  {
-    number: 7,
-    supplier: "CU 동대문점",
-    retailer: "광주 서구 푸드마트",
-    date: "2025.02.28",
-    amount: 8900000,
-  },
-  {
-    number: 8,
-    supplier: "CU 동대문점",
-    retailer: "광주 서구 푸드마트",
-    date: "2025.02.28",
-    amount: 8900000,
-  },
-  {
-    number: 9,
-    supplier: "CU 동대문점",
-    retailer: "광주 서구 푸드마트",
-    date: "2025.02.28",
-    amount: 8900000,
-  },
-  {
-    number: 10,
-    supplier: "CU 동대문점",
-    retailer: "광주 서구 푸드마트",
-    date: "2025.02.28",
-    amount: 8900000,
-  },
-  {
-    number: 11,
-    supplier: "CU 동대문점",
-    retailer: "광주 서구 푸드마트",
-    date: "2025.02.28",
-    amount: 8900000,
-  },
-  {
-    number: 12,
-    supplier: "CU 동대문점",
-    retailer: "광주 서구 푸드마트",
-    date: "2025.02.28",
-    amount: 8900000,
-  },
-  {
-    number: 13,
-    supplier: "CU 동대문점",
-    retailer: "광주 서구 푸드마트",
-    date: "2025.02.28",
-    amount: 8900000,
-  },
-];
+interface SubmitTabelProps {
+  data: NtsTax[];
+  checkedItem: number[];
+  setCheckedItem: React.Dispatch<React.SetStateAction<number[]>>;
+  correctCount: number;
+  inCorrectCount: number;
+  isSuccess: string;
+  isAllChecked: boolean;
+  setIsAllChecked: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const SubmitTable = () => {
-  const [selectAll, setSelectAll] = useState<boolean>(false); // 전체 체크박스 상태
-  const [checkedItems, setCheckedItems] = useState<boolean[]>(
-    new Array(tableData.length).fill(false)
-  ); // 개별 체크박스 상태 배열
+const SubmitTable = ({
+  data,
+  checkedItem,
+  setCheckedItem,
+  isSuccess,
+  correctCount,
+  inCorrectCount,
+  isAllChecked,
+  setIsAllChecked,
+}: SubmitTabelProps) => {
+  const [openInfo, setOpenInfo] = useState(false);
 
-  // 전체 체크박스 클릭 시 처리 함수
-  const handleSelectAll = (checked: boolean) => {
-    setSelectAll(checked);
-    setCheckedItems(new Array(tableData.length).fill(checked)); // 모든 항목 체크/해제
+  const handleCheckChange = (checked: boolean, ntsTaxId: number) => {
+    setCheckedItem((prev) =>
+      checked ? [...prev, ntsTaxId] : prev.filter((id) => id !== ntsTaxId)
+    );
   };
 
-  // 개별 아이템 체크박스 상태 변경 함수
-  const handleItemCheck = (index: number, checked: boolean) => {
-    const updatedCheckedItems = [...checkedItems];
-    updatedCheckedItems[index] = checked;
-    setCheckedItems(updatedCheckedItems);
+  const handleAllCheckChange = (checked: boolean) => {
+    if (checked) {
+      setCheckedItem(data.map((item) => item.ntsTaxId));
+      setIsAllChecked(true);
+      setOpenInfo(true);
+    } else {
+      setCheckedItem([]);
+      setIsAllChecked(false);
+      setOpenInfo(false);
+    }
   };
+
+  useEffect(() => {
+    console.log(checkedItem);
+  }, [checkedItem, isAllChecked]);
+
+  useEffect(() => {
+    setCheckedItem([]);
+    setIsAllChecked(false);
+    setOpenInfo(false);
+  }, [isSuccess]);
 
   return (
-    <div className="w-[1240px] 3xl:w-[1560px] h-[597px] 3xl:h-[644px] border border-solid border-grayScale-200 rounded bg-white overflow-y-auto overflow-x-hidden mb-[49px]">
-      {/* 헤더 */}
-      <div className="sticky top-0 flex flex-wrap h-10 text-left bg-white border-b border-solid border-grayScale-200 b5 text-grayScale-500">
-        <div className="w-[34px] ml-[15px] flex items-center">
-          <CheckBox
-            checked={selectAll}
-            onChange={(e) => handleSelectAll(e.target.checked)}
-          />
-        </div>
-        <div className="w-[118px] 3xl:w-[200px] flex items-center">번호</div>
-        <div className="w-[358px] 3xl:w-[400px] flex items-center">공급자</div>
-        <div className="w-[356px] 3xl:w-[400px] first-letter: flex items-center">
-          공급 받는자
-        </div>
-        <div className="w-[193px] 3xl:w-[250px] flex items-center">
-          작성일자
-        </div>
-        <div className="w-[144px] 3xl:w-[200px] flex items-center">
-          공급가액
-        </div>
-      </div>
-      <div>
-        {/* 테이블 항목 반복 */}
-        <div className="w-[1240px] 3xl:w-[1560px]">
-          {tableData.map((item, index) => (
-            <SubmitTableItem
-              key={index}
-              check={checkedItems[index]}
-              number={item.number}
-              supplier={item.supplier}
-              retailer={item.retailer}
-              date={item.date}
-              amount={item.amount}
-              onCheckChange={(checked) => handleItemCheck(index, checked)} // 항목 체크 변경 처리
+    <>
+      <div className="w-[1240px] 3xl:w-[1560px] max-h-[597px] h-fit 3xl:max-h-[664px] 3xl:h-fit border border-solid border-grayScale-200 rounded bg-white overflow-y-auto overflow-x-hidden mb-[49px]">
+        <div className="sticky top-0 flex flex-wrap h-10 text-left bg-white border-b border-solid border-grayScale-200 b5 text-grayScale-500">
+          {/* 헤더 */}
+          <div className="w-[34px] ml-[15px] flex items-center">
+            <CheckBox
+              checked={isAllChecked}
+              onChange={(e) => handleAllCheckChange(e.target.checked)}
             />
-          ))}
+          </div>
+          <div className="w-[118px] 3xl:w-[200px] flex items-center">번호</div>
+          <div className="w-[336px] 3xl:w-[400px] flex items-center">
+            공급자
+          </div>
+          <div className="w-[300px] 3xl:w-[400px] flex items-center">
+            공급 받는자
+          </div>
+          <div className="w-[174px] 3xl:w-[250px] flex items-center">
+            작성일자
+          </div>
+          <div className="w-[164px] 3xl:w-[180px] flex items-center">
+            공급가액
+          </div>
+          <div className="w-[61px] flex items-center text-center">
+            변환 결과
+          </div>
+        </div>
+        <div>
+          {/* 테이블 항목 반복 */}
+
+          {data.length > 0 ? (
+            data.map((item, index) => (
+              <div className="w-[1220x] 3xl:w-[1560px] mb-[6px]">
+                <SubmitTableItem
+                  key={index}
+                  check={checkedItem.includes(item.ntsTaxId)}
+                  number={item.ntsTaxId}
+                  supplier={item.suName}
+                  retailer={item.ipName}
+                  date={item.issueDate}
+                  amount={item.grandTotal}
+                  validationResult={item.isSuccess === "SUCCESS"}
+                  onCheckChange={(checked) =>
+                    handleCheckChange(checked, item.ntsTaxId)
+                  }
+                  onClick={() => console.log(`Clicked item ${item.ntsTaxId}`)}
+                />
+              </div>
+            ))
+          ) : (
+            <div className="flex-col center bg-grayScale-50 h-[450px]">
+              <img
+                src="/assets/icons/milk.svg"
+                alt="milk"
+                className="mb-[32px]"
+              />
+              <span className="mb-1 h1 text-grayScale-500">텅 비어있어요</span>
+              <p className="s2 text-grayScale-500">계산서를 업로드해주세요.</p>
+            </div>
+          )}
         </div>
       </div>
-      {selectAll && (
-        <div className="absolute top-[43px] left-1/2 transform -translate-x-1/2 flex px-5 py-[9px] bg-white rounded-xl shadow-[0px_3px_15px_0px_rgba(0,0,0,0.10),_0px_10px_30px_8px_rgba(0,0,0,0.05)] items-center">
-          <img src="/assets/icons/info.svg" alt="info" className="mr-[6px]" />
-          <p className="mr-2 b4 text-grayScale-700">
-            이 페이지 있는 항목 {tableData.length}건이 모두 선택되었습니다.
-          </p>
-          <p className="b3 text-secondary-500">
-            전체 {tableData.length}건 모두 선택
-          </p>
+
+      {openInfo && (
+        <div className="left-1/2 translate-x-[-50%] translate-y-[-50%] absolute top-[55px] px-5 py-2 border border-secondary-300 bg-white flex rounded-xl shadow-lg w-[573px] gap-[6px] items-center">
+          <img src="/assets/icons/info.svg" alt="info" />
+          {isAllChecked ? (
+            <div className="flex justify-between w-full b3 text-grayScale-700">
+              <div className="flex gap-[2px]">
+                전체 페이지에 있는 항목
+                <Tag
+                  text={
+                    isSuccess === "SUCCESS"
+                      ? `${correctCount}건`
+                      : `${inCorrectCount}건`
+                  }
+                />
+                이 모두 선택되었습니다.
+              </div>
+              <p
+                className="border-b text-secondary-500 b3 border-b-secondary-500"
+                onClick={() => setIsAllChecked(false)}
+              >
+                선택 취소
+              </p>
+            </div>
+          ) : (
+            <div className="flex justify-between w-full b3 text-grayScale-700">
+              <div className="flex gap-[2px]">
+                이 페이지에 있는 항목
+                <Tag text="13건" />만 선택되었습니다.
+              </div>
+              <p
+                className="border-b text-secondary-500 b3 border-b-secondary-500"
+                onClick={() => setIsAllChecked(true)}
+              >
+                전체
+                {isSuccess === "SUCCESS"
+                  ? `${correctCount}건`
+                  : `${inCorrectCount}건`}{" "}
+                모두 선택
+              </p>
+            </div>
+          )}
         </div>
       )}
-    </div>
+    </>
   );
 };
 

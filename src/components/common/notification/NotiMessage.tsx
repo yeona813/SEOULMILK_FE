@@ -1,5 +1,5 @@
 interface NotiMessageProps {
-  type: "noti" | "success" | "error";
+  type: "noti" | "success" | "error" | "validate";
   month?: number;
   text?: string;
 }
@@ -32,6 +32,12 @@ const NotiMessage = ({ type, month, text }: NotiMessageProps) => {
         "데이터가 제대로 입력 되어있는지 확인 or 대리점에 문의하세요.",
       textColor: "text-primary-500",
       backgroundColor: "bg-primary-25",
+    },
+    validate: {
+      icon: "/assets/icons/validate.svg",
+      text: "홈택스 검증 중...",
+      textColor: "text-warning-500",
+      backgroundColor: "bg-warning-50",
     },
   };
 

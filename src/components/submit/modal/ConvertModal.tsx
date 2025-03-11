@@ -1,5 +1,4 @@
 import Modal from "@/components/common/modal/Modal";
-import ProgressBar from "@/components/common/control/ProgressBar";
 import StatusBadge from "@/components/common/control/StatusBadge";
 import Button from "@/components/common/button/Button";
 import useModalStore from "@/stores/useModalStore";
@@ -7,12 +6,12 @@ import useModalStore from "@/stores/useModalStore";
 //@TODO 성공, 실패, 합계 API 연동 시 count 값 수정해야 함!
 
 const ConvertModal = () => {
-  const { closeConvert, openFail, openSuccess, ocrData } = useModalStore();
+  const { closeConvert, ocrData } = useModalStore();
   return (
     <Modal>
       <div className="center flex-col w-[590px]">
-        <ProgressBar currentNumber={2} />
-        <div className="flex-col gap-2 mt-10 center">
+        <div className="flex-col gap-4 center">
+          <img src="/assets/icons/requestSuccess.svg" alt="success" />
           <span className="h2 text-grayScale-900">
             텍스트 변환을 완료했어요!
           </span>
@@ -22,29 +21,15 @@ const ConvertModal = () => {
             <StatusBadge status="합계" count={ocrData?.totalCnt || 0} />
           </div>
         </div>
-        <div className="flex w-full gap-5">
-          <Button
-            size="medium"
-            color="gray"
-            onClick={() => {
-              closeConvert();
-            }}
-          >
-            취소
-          </Button>
+        <div className="w-full">
           <Button
             size="medium"
             color="green"
             onClick={() => {
               closeConvert();
-              if (ocrData && ocrData?.failedCnt > 0) {
-                openFail();
-              } else {
-                openSuccess();
-              }
             }}
           >
-            다음
+            완료
           </Button>
         </div>
       </div>

@@ -13,3 +13,12 @@ html {
 .exist-icon {
   @apply flex items-center justify-center gap-1;
 }
+
+.drawer {
+  transform: translateX(100%);
+  transition: transform 300ms ease-in-out;
+}
+
+.drawer.open {
+  transform: translateX(0%);
+}

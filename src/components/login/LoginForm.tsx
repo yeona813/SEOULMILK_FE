@@ -16,11 +16,7 @@ interface FormValues {
 const LoginForm = () => {
   const navigate = useNavigate();
   const { role } = useUserStore();
-  
-  function updateAccessToken(newAccessToken: string) {
-    localStorage.removeItem("accessToken");
-    localStorage.setItem("accessToken", newAccessToken);
-  }
+
   const methods = useForm<FormValues>({
     mode: "onChange",
     defaultValues: {
@@ -30,27 +26,25 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (data: FormValues) => {
-    let accessToken: string | null = null;
+    let isSucces: boolean | null = false;
 
     if (role === "admin") {
       console.log("해야함");
     } else if (role === "dealership") {
-      accessToken = await postAgencyLogin(
+      isSucces = await postAgencyLogin(
         data.employeeNumber,
         data.password,
         role
       );
     } else {
-      accessToken = await postEmployeeLogin(
+      isSucces = await postEmployeeLogin(
         data.employeeNumber,
         data.password,
         role
       );
     }
 
-    if (accessToken) {
-      updateAccessToken(accessToken);
-
+    if (isSucces) {
       if (role === "admin") {
         navigate("/addUser");
       } else if (role === "dealership") {

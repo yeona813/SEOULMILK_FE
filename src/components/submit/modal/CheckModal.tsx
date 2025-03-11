@@ -5,6 +5,8 @@ import useModalStore from "@/stores/useModalStore";
 
 interface CheckModalProps {
   count: number;
+  onDelete: () => void;
+  onSubmit: () => Promise<boolean | undefined>;
 }
 
 /**
@@ -12,8 +14,26 @@ interface CheckModalProps {
  * @param count - 세금 계산서 제출 건수
  * @returns
  */
-const CheckModal = ({ count }: CheckModalProps) => {
+const CheckModal = ({ count, onDelete, onSubmit }: CheckModalProps) => {
   const { closeSaveCheck, saveCheckType, openSuccessSubmit } = useModalStore();
+
+  const handleSubmit = async () => {
+    if (saveCheckType === "제출") {
+      try {
+        const isSuccess = await onSubmit();
+        if (isSuccess) {
+          openSuccessSubmit("제출");
+        }
+        closeSaveCheck();
+      } catch (error) {
+        console.error("제출 중 오류 발생:", error);
+      }
+    } else if (saveCheckType === "삭제") {
+      onDelete();
+      closeSaveCheck();
+    }
+  };
+
   return (
     <Modal>
       <div className="center flex-col w-[407px] gap-2">
@@ -31,14 +51,7 @@ const CheckModal = ({ count }: CheckModalProps) => {
           <Button size="large" color="gray" onClick={closeSaveCheck}>
             취소
           </Button>
-          <Button
-            size="large"
-            color="green"
-            onClick={() => {
-              closeSaveCheck();
-              openSuccessSubmit("제출");
-            }}
-          >
+          <Button size="large" color="green" onClick={handleSubmit}>
             확인
           </Button>
         </div>

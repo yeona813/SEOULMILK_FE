@@ -25,7 +25,7 @@ interface SubmitTableItemProps {
  * @param {(checked: boolean) => void} onCheckChange - 체크박스 상태 변경 시 호출되는 함수
  * @return
  */
-const VerifyTableItem = ({
+const SubmitTableItem = ({
   check,
   number,
   supplier,
@@ -38,9 +38,6 @@ const VerifyTableItem = ({
 }: SubmitTableItemProps) => {
   const formattedNumber = number.toString().padStart(3, "0");
 
-  // 금액에 컴마 추가
-  const formattedAmount = amount.toLocaleString();
-
   // 배경색을 선택 상태에 따라 다르게 설정
   const rowClass = check ? "bg-grayScale-100" : "";
 
@@ -52,6 +49,7 @@ const VerifyTableItem = ({
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onCheckChange(event.target.checked);
   };
+
   return (
     <div
       className={`flex items-center h-10 mt-[6px] mx-[7px] text-grayScale-700 b4 rounded-lg ${rowClass} group hover:bg-grayScale-50 `}
@@ -64,22 +62,22 @@ const VerifyTableItem = ({
       <div
         className={`w-[336px] 3xl:w-[400px] ${supplier === "" && "text-grayScale-300"}`}
       >
-        {supplier === "" ? "OCR 누락" : supplier}
+        {supplier === "" ? "OCR 실패" : supplier}
       </div>
       <div
         className={`w-[300px] 3xl:w-[400px] ${retailer === "" && "text-grayScale-300"}`}
       >
-        {retailer === "" ? "OCR 누락" : retailer}
+        {retailer === "" ? "OCR 실패" : retailer}
       </div>
       <div
         className={`w-[174px] 3xl:w-[250px] ${date === "" && "text-grayScale-300"}`}
       >
-        {date === "" ? "OCR 누락" : date}
+        {date === "" ? "OCR 실패" : date}
       </div>
       <div
-        className={`w-[164px] 3xl:w-[180px] ${formattedAmount === "" && "text-grayScale-300"}`}
+        className={`w-[164px] 3xl:w-[180px] ${amount === "" && "text-grayScale-300"}`}
       >
-        {formattedAmount === "" ? "OCR 누락" : formattedAmount}
+        {amount === "" ? "OCR 실패" : amount}
       </div>
       {/* 수정된 부분 */}
       <div className="w-[53px] flex items-center">
@@ -96,4 +94,4 @@ const VerifyTableItem = ({
     </div>
   );
 };
-export default VerifyTableItem;
+export default SubmitTableItem;

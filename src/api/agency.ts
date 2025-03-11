@@ -37,7 +37,7 @@ export const postAgencyLogin = async (
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
 
-      return accessToken;
+      return true;
     } else {
       // 에러 메시지를 처리하거나 반환
       console.error("Login failed:", response.data.message);

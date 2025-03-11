@@ -1,12 +1,15 @@
 import { postNtsTaxUpload } from "@/api/ntsTax";
 import Button from "@/components/common/button/Button";
 import DeleteButton from "@/components/common/button/DeleteButton";
-import ProgressBar from "@/components/common/control/ProgressBar";
 import Modal from "@/components/common/modal/Modal";
 import useModalStore from "@/stores/useModalStore";
 import React, { useRef, useState } from "react";
 
-const UploadModal = () => {
+interface UploadModalProps {
+  fetchData: () => void;
+}
+
+const UploadModal = ({ fetchData }: UploadModalProps) => {
   const [files, setFiles] = useState<File[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -17,6 +20,12 @@ const UploadModal = () => {
       const selectedFiles = Array.from(event.target.files);
       setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
     }
+  };
+
+  const handleDeleteFile = (indexToRemove: number) => {
+    setFiles((prevFiles) =>
+      prevFiles.filter((_, index) => index !== indexToRemove)
+    );
   };
 
   const handleClickUploadArea = () => {
@@ -36,6 +45,7 @@ const UploadModal = () => {
       if (response) {
         setOCRData(response);
       }
+      fetchData();
     } catch (error) {
       console.error(error);
     } finally {
@@ -48,15 +58,13 @@ const UploadModal = () => {
     <Modal onClose={closeUpload}>
       {isUploading ? (
         <div className="center flex-col w-[590px]">
-          <ProgressBar currentNumber={2} />
-          <div className="my-10 text-center h2 text-grayScale-900">
+          <div className="text-center h2 text-grayScale-900">
             세금 계산서를 텍스트로
             <br /> 변환하고 있어요
           </div>
         </div>
       ) : (
         <div className="flex-col gap-6 center w-[720px]">
-          <ProgressBar currentNumber={1} />
           <span className="mt-2 h2 text-grayScale-900">계산서 업로드 하기</span>
           <div className="flex w-full gap-5">
             {/* 파일 업로드 영역 */}
@@ -70,7 +78,7 @@ const UploadModal = () => {
                   <span className="st3 text-grayScale-700">
                     파일을 선택하거나 올려주세요
                   </span>
-                  <p className="b2 text-grayScale-500">OOMB 이하</p>
+                  <p className="b2 text-grayScale-500">100MB 이하</p>
                 </div>
               </div>
               <input
@@ -100,7 +108,7 @@ const UploadModal = () => {
                         <p className="b5 text-grayScale-700">{file.name}</p>
                         <DeleteButton
                           onClick={() => {
-                            console.log(index);
+                            handleDeleteFile(index);
                           }}
                         />
                       </div>

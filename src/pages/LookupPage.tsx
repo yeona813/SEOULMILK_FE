@@ -1,7 +1,7 @@
 import Pagination from "@/components/common/control/Pagination";
 import SuccessModal from "@/components/common/modal/SuccessModal";
 import LookupHeader from "@/components/lookup/LookupHeader";
-import SubmitTable from "@/components/submit/SubmitTable";
+import SubmitTable from "@/components/lookup/LookupTable";
 import useModalStore from "@/stores/useModalStore";
 
 const LookupPage = () => {

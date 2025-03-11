@@ -2,12 +2,23 @@ import Button from "../common/button/Button";
 import Clipboard from "@/assets/icons/clipboard.svg?react";
 import Submit from "@/assets/icons/submit.svg?react";
 import useModalStore from "@/stores/useModalStore";
+import CorrectPicker from "../common/control/CorrectPicker";
 
 interface SubmitHeaderProps {
-  total: number;
+  isSuccess: string;
+  setIsSuccess: (type: string) => void;
+  correctCount: number;
+  inCorrectCount: number;
+  checkedItem: number[];
 }
 
-const SubmitHeader = ({ total }: SubmitHeaderProps) => {
+const SubmitHeader = ({
+  isSuccess,
+  setIsSuccess,
+  correctCount,
+  inCorrectCount,
+  checkedItem,
+}: SubmitHeaderProps) => {
   const { openUpload, openSaveCheck } = useModalStore();
 
   return (
@@ -17,7 +28,12 @@ const SubmitHeader = ({ total }: SubmitHeaderProps) => {
       </h1>
       <div className="flex items-end justify-between w-full mt-[6px]">
         <div className="flex gap-[10px] items-center">
-          <span className="b3 text-grayScale-700">전체 {total}건</span>
+          <CorrectPicker
+            correctCount={correctCount}
+            inCorrectCount={inCorrectCount}
+            isSuccess={isSuccess}
+            setIsSuccess={setIsSuccess}
+          />
           <span
             className="b3 text-grayScale-400 rounded-2xl hover:bg-grayScale-100 px-3 py-[2px] hover:text-grayScale-600"
             onClick={() => openSaveCheck("삭제")}
@@ -37,6 +53,7 @@ const SubmitHeader = ({ total }: SubmitHeaderProps) => {
             size="medium"
             color="green"
             onClick={() => openSaveCheck("제출")}
+            disabled={checkedItem.length === 0 || isSuccess === "FAILED"}
           >
             <div className="flex items-center gap-1">
               <Submit />

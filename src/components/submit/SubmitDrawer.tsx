@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import NotiMessage from "../common/notification/NotiMessage";
 
-interface VerifyDrawerProps {
+interface SubmitDrawerProps {
   open: boolean;
   onClose: () => void;
   data: {
@@ -12,15 +12,14 @@ interface VerifyDrawerProps {
     date: string;
     amount: number;
     validationResult: boolean;
-    newly: boolean;
   } | null;
 }
 
-export default function VerifyDrawer({
+export default function SubmitDrawer({
   open,
   onClose,
   data,
-}: VerifyDrawerProps) {
+}: SubmitDrawerProps) {
   const DrawerContent = () => {
     if (!data) return <div>No data available.</div>;
 

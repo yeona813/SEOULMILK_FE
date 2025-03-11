@@ -1,6 +1,6 @@
 import CheckBox from "../common/control/CheckBox";
 
-interface SubmitTableItemProps {
+interface LookupTableItemProps {
   check: boolean;
   number: number;
   supplier: string;
@@ -22,7 +22,7 @@ interface SubmitTableItemProps {
  * @param {(checked: boolean) => void} onCheckChange - 체크박스 상태 변경 시 호출되는 함수
  * @return
  */
-const SubmitTableItem = ({
+const LookupTableItem = ({
   check,
   number,
   supplier,
@@ -30,7 +30,7 @@ const SubmitTableItem = ({
   date,
   amount,
   onCheckChange,
-}: SubmitTableItemProps) => {
+}: LookupTableItemProps) => {
   const formattedNumber = number.toString().padStart(3, "0");
 
   // 금액에 컴마 추가
@@ -58,4 +58,4 @@ const SubmitTableItem = ({
   );
 };
 
-export default SubmitTableItem;
+export default LookupTableItem;
