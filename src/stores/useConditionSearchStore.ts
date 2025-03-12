@@ -56,8 +56,8 @@ const useConditionSearchStore = create<ConditionSearchState>()(
     },
     fetchSearchData: async (
       page: number,
-      status: string,
-      userType: "admin" | "employee"
+      userType: "admin" | "employee",
+      status?: string
     ) => {
       const { startMonth, endMonth, supplierTags, recipientTags } = get();
 
