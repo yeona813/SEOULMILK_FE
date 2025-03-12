@@ -8,6 +8,9 @@ export interface employeeTax {
   ipName: string;
   grandTotal: string;
   chargeTotal: string;
+  createdTime: string;
+  createdAt: string;
   taxTotal: string;
+  ar: string;
   status: "APPROVAL" | "REJECTION" | "WAITING";
 }

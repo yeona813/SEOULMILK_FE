@@ -27,8 +27,8 @@ export interface NtsTaxData {
 export interface NtsTaxHubData {
   listSize: number;
   ntsTaxList: NtsTax[];
-  totalCnt: number;
-  approvedCnt: number;
-  rejectedCnt: number;
+  totalElements: number;
+  successElements: number;
+  failedElements: number;
   totalPage: number;
 }

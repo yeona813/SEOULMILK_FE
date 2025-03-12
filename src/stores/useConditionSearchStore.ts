@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { api } from "@/api";
-import { useDataTaxStore } from "./useVerifyStore";
+import { NtsTaxHubData } from "@/types/ntsTax";
+import { HomeNtsTaxData } from "./useVerifyStore";
 
 const accessToken = localStorage.getItem("accessToken");
 
@@ -16,7 +17,11 @@ interface ConditionSearchState {
   setEndMonth: (date: Date | null) => void;
   addTag: (type: "supplier" | "recipient", tag: string) => void;
   removeTag: (type: "supplier" | "recipient", tag: string) => void;
-  fetchSearchData: (page: number, status: string) => Promise<void>;
+  fetchSearchData: (
+    page: number,
+    status: string | undefined,
+    userType: "admin" | "employee"
+  ) => Promise<HomeNtsTaxData | NtsTaxHubData | undefined>;
 }
 
 const useConditionSearchStore = create<ConditionSearchState>()(
@@ -49,16 +54,20 @@ const useConditionSearchStore = create<ConditionSearchState>()(
         [key]: state[key].filter((t: string) => t !== tag),
       }));
     },
-    fetchSearchData: async (page: number , status: string) => {
+    fetchSearchData: async (
+      page: number,
+      status: string,
+      userType: "admin" | "employee"
+    ) => {
       const { startMonth, endMonth, supplierTags, recipientTags } = get();
 
       const params = new URLSearchParams();
 
       if (startMonth) {
-        params.append("startMonth", startMonth.toISOString().split("T")[0]);
+        params.append("startAt", startMonth.toISOString().split("T")[0]);
       }
       if (endMonth) {
-        params.append("endMonth", endMonth.toISOString().split("T")[0]);
+        params.append("endAt", endMonth.toISOString().split("T")[0]);
       }
 
       supplierTags.forEach((tag) => {
@@ -69,19 +78,28 @@ const useConditionSearchStore = create<ConditionSearchState>()(
         params.append("ipNameList", tag);
       });
 
+      const basePath =
+        userType === "admin"
+          ? "/admin/nts-tax/search"
+          : "/employee/nts-tax/search-hometax";
+
+      // 기본 페이지 파라미터
+      let requestUrl = `${basePath}?page=${page - 1}`;
+
+      // status가 존재할 경우, 쿼리 파라미터에 추가
+      if (status) {
+        requestUrl += `&status=${status}`;
+      }
       try {
-        const response = await api.get(
-          `/employee/nts-tax/search-hometax?page=${page - 1}&status=${status}`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-            params,
-          }
-        );
+        const response = await api.get(requestUrl, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          params,
+        });
 
         if (response.data.success) {
-          useDataTaxStore.getState().setData(response.data.data); // ✅ 검색 결과를 데이터 스토어에 저장
+          return response.data.data;
         }
       } catch (error) {
         console.error("검색 데이터 가져오기 오류:", error);

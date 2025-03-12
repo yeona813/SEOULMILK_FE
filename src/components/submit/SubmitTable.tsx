@@ -39,7 +39,6 @@ const SubmitTable = ({
 
   const handleItemClick = (item: NtsTax) => {
     setSelectedItem(item);
-    setSelectedItem(item);
     openFailDrawer();
   };
 

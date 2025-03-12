@@ -6,12 +6,22 @@ import SearchInput from "../input/SearchInput";
 import Button from "../button/Button";
 import SearchTag from "../notification/SearchTag";
 import useConditionSearchStore from "@/stores/useConditionSearchStore";
+import { HomeNtsTaxData, useDataTaxStore } from "@/stores/useVerifyStore";
+import { NtsTaxHubData } from "@/types/ntsTax";
 
 interface SearchConditionModalProps {
   page: number;
+  status: "APPROVAL" | "REJECTION" | undefined;
+  userType: "admin" | "employee";
+  setData?: React.Dispatch<React.SetStateAction<NtsTaxHubData | null>>;
 }
 
-const SearchConditionModal = ({ page }: SearchConditionModalProps) => {
+const SearchConditionModal = ({
+  page,
+  status,
+  userType,
+  setData,
+}: SearchConditionModalProps) => {
   const { closeSearchCondition } = useModalStore();
   const {
     startMonth,
@@ -46,8 +56,24 @@ const SearchConditionModal = ({ page }: SearchConditionModalProps) => {
     setSelectedEndDate(endMonth);
   }, [startMonth, endMonth]);
 
-  const handleSubmit = () => {
-    if (!isSearchMode) fetchSearchData(page);
+  const handleSubmit = async () => {
+    if (!isSearchMode) {
+      const data = await fetchSearchData(page, status, userType);
+
+      if (!data) {
+        console.error("검색 데이터를 가져오지 못했습니다.");
+        return;
+      }
+
+      if (userType === "employee") {
+        useDataTaxStore.getState().setData(data as HomeNtsTaxData);
+      } else if (userType === "admin") {
+        if (setData) {
+          setData(data as NtsTaxHubData);
+        }
+      }
+    }
+
     setSearchMode(true);
     closeSearchCondition();
   };
@@ -140,3 +166,4 @@ const SearchConditionModal = ({ page }: SearchConditionModalProps) => {
 };
 
 export default SearchConditionModal;
+

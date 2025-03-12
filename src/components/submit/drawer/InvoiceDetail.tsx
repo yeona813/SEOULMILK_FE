@@ -13,7 +13,7 @@ const InvoiceDetail = () => {
       "전자세금계산서 작성일자",
       "공급자 사업등록번호",
       "공급 받는자 사업자등록번호",
-      "합계금액",
+      "공급가액",
     ],
     values: [
       selectedItem.issueId,

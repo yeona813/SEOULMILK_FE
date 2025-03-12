@@ -3,8 +3,10 @@ import AdminHubHeader from "@/components/adminHub/AdminHubHeader";
 import AdminHubTable from "@/components/adminHub/AdminHubTable";
 import Pagination from "@/components/common/control/Pagination";
 import { downloadCSV } from "@/components/common/downloadCSV";
+import SearchConditionModal from "@/components/common/modal/SearchConditionModal";
 import CheckModal from "@/components/submit/modal/CheckModal";
 import { useAdminPickerStore } from "@/stores/useAdminStore";
+import useConditionSearchStore from "@/stores/useConditionSearchStore";
 import useModalStore from "@/stores/useModalStore";
 import { NtsTaxHubData } from "@/types/ntsTax";
 import { useEffect, useState } from "react";
@@ -16,7 +18,9 @@ const AdminHubPage = () => {
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
   const { currentStatus } = useAdminPickerStore();
-  const { isSaveCheckOpen, closeSaveCheck } = useModalStore();
+  const { isSaveCheckOpen, closeSaveCheck, isSearchConditionOpen } =
+    useModalStore();
+  const { isSearchMode, fetchSearchData } = useConditionSearchStore();
 
   const fetchData = async () => {
     const response = await getAdminNtsTax(currentPage - 1, currentStatus);
@@ -70,15 +74,24 @@ const AdminHubPage = () => {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [currentStatus, currentPage]);
+    const fetchAndSetData = async () => {
+      if (!isSearchMode) fetchData();
+      else {
+        const data = await fetchSearchData(currentPage, currentStatus, "admin");
+        if (data) {
+          setData(data as NtsTaxHubData);
+        }
+      }
+    };
+    fetchAndSetData();
+  }, [currentStatus, currentPage, isSearchMode]);
 
   return (
     <div className="relative flex flex-col items-center w-full h-full gap-4 bg-grayScale-25">
       <AdminHubHeader
-        totalCount={data?.totalCnt || 0}
-        correctCount={data?.approvedCnt || 0}
-        inCorrectCount={data?.rejectedCnt || 0}
+        totalCount={data?.totalElements || 0}
+        correctCount={data?.successElements || 0}
+        inCorrectCount={data?.failedElements || 0}
         checkedItem={checkedItem}
         onSubmit={handleSubmit}
       />
@@ -87,9 +100,9 @@ const AdminHubPage = () => {
           data={data?.ntsTaxList ?? []}
           checkedItem={checkedItem}
           setCheckedItem={setCheckedItem}
-          totalCount={data.totalCnt}
-          correctCount={data.approvedCnt}
-          inCorrectCount={data.rejectedCnt}
+          totalCount={data.totalElements}
+          correctCount={data.successElements}
+          inCorrectCount={data.failedElements}
           isAllChecked={isAllChecked}
           setIsAllChecked={setIsAllChecked}
           openInfo={openInfo}
@@ -105,6 +118,14 @@ const AdminHubPage = () => {
       />
       {isSaveCheckOpen && (
         <CheckModal count={checkedItem.length} onDelete={handleDelete} />
+      )}
+      {isSearchConditionOpen && (
+        <SearchConditionModal
+          page={currentPage}
+          status={currentStatus}
+          userType="admin"
+          setData={setData}
+        />
       )}
     </div>
   );

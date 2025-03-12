@@ -165,3 +165,21 @@ export const postCheckedCSV = async (ntsTaxId: number[]) => {
     console.error(error);
   }
 };
+
+export const getAgencyList = async (page: number) => {
+  const accessToken = localStorage.getItem("accessToken");
+
+  try {
+    const response = await api.get(`/admin/agency?page=${page}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (response.data) {
+      return response.data.data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};

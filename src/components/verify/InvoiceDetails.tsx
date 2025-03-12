@@ -9,7 +9,13 @@ const InvoiceDetails = () => {
 
   // 라벨과 값을 매핑
   const primaryData = {
-    labels: ["승인번호", "전자세금계산서 작성일자", "공급자 사업등록번호", "공급 받는자 사업자등록번호", "합계금액"],
+    labels: [
+      "승인번호",
+      "전자세금계산서 작성일자",
+      "공급자 사업등록번호",
+      "공급 받는자 사업자등록번호",
+      "공급가액",
+    ],
     values: [
       invoice.issueId,
       invoice.issueAt,

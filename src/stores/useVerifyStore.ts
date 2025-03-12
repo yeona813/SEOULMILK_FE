@@ -19,7 +19,7 @@ export interface invoiceData {
   ipId: string;
 }
 
-interface NtsTaxData {
+export interface HomeNtsTaxData {
   listSize: number;
   hometaxList: employeeTax[];
   successElements: number;
@@ -29,13 +29,13 @@ interface NtsTaxData {
 }
 
 interface TaxDataStoreState {
-  data: NtsTaxData | null;
+  data: HomeNtsTaxData | null;
   currentStatus: "APPROVAL" | "REJECTION";
   setStatus: (status: "APPROVAL" | "REJECTION") => void;
   currentPage: number;
   setCurrentPage: (page: number) => void;
   fetchData: (page: number, status: string) => Promise<void>;
-  setData: (data: NtsTaxData) => void;
+  setData: (data: HomeNtsTaxData) => void;
 }
 
 export const useDataTaxStore = create<TaxDataStoreState>()(
