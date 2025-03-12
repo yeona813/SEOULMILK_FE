@@ -34,6 +34,9 @@ export const postAgencyLogin = async (
       });
 
       // 로컬 스토리지에 토큰 저장
+      localStorage.setItem("email", email);
+      localStorage.setItem("role", role);
+      localStorage.setItem("name", name);
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
 

@@ -15,3 +15,20 @@ export interface NtsTax {
   createdTime?: string;
   imageUrl?: string;
 }
+
+export interface NtsTaxData {
+  listSize: number;
+  ntsTaxList: NtsTax[];
+  successElements: number;
+  failedElements: number;
+  totalPage: number;
+}
+
+export interface NtsTaxHubData {
+  listSize: number;
+  ntsTaxList: NtsTax[];
+  totalCnt: number;
+  approvedCnt: number;
+  rejectedCnt: number;
+  totalPage: number;
+}

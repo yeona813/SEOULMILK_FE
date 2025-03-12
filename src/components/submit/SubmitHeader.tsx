@@ -48,7 +48,6 @@ const SubmitHeader = ({
               계산서 업로드
             </div>
           </Button>
-          {/* disabled 해야함! */}
           <Button
             size="medium"
             color="green"

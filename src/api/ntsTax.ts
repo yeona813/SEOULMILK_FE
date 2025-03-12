@@ -77,7 +77,7 @@ export const putNtsTaxEdit = async (ntsTaxId: number, data: NtsTax) => {
 };
 
 /**
- * 본사, 대리점 - 세금 계산서 페이지 내 다건 삭제
+ * 대리점 - 세금 계산서 페이지 내 다건 삭제
  *
  * @param deleteNtsTaxIds
  * @returns

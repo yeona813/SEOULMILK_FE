@@ -7,6 +7,7 @@ import { postEmployeeLogin } from "@/api/employee";
 import { useUserStore } from "@/stores/useUserStore";
 import { postAgencyLogin } from "@/api/agency";
 import { useNavigate } from "react-router-dom";
+import { postAdminLogin } from "@/api/admin";
 
 interface FormValues {
   employeeNumber: string;
@@ -26,25 +27,25 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (data: FormValues) => {
-    let isSucces: boolean | null = false;
+    let isSuccess: boolean | null | undefined = false;
 
     if (role === "admin") {
-      console.log("해야함");
+      isSuccess = await postAdminLogin(data.employeeNumber);
     } else if (role === "dealership") {
-      isSucces = await postAgencyLogin(
+      isSuccess = await postAgencyLogin(
         data.employeeNumber,
         data.password,
         role
       );
     } else {
-      isSucces = await postEmployeeLogin(
+      isSuccess = await postEmployeeLogin(
         data.employeeNumber,
         data.password,
         role
       );
     }
 
-    if (isSucces) {
+    if (isSuccess) {
       if (role === "admin") {
         navigate("/addUser");
       } else if (role === "dealership") {
@@ -80,7 +81,10 @@ const LoginForm = () => {
               로그인
             </button>
             {role === "headquarters" && (
-              <button className="w-full text-grayScale-400 b2">
+              <button
+                className="w-full text-grayScale-400 b2"
+                onClick={() => navigate("/employeePW")}
+              >
                 비밀번호 재설정
               </button>
             )}

@@ -6,7 +6,7 @@ import useModalStore from "@/stores/useModalStore";
 interface CheckModalProps {
   count: number;
   onDelete: () => void;
-  onSubmit: () => Promise<boolean | undefined>;
+  onSubmit?: () => Promise<boolean | undefined>;
 }
 
 /**
@@ -20,7 +20,7 @@ const CheckModal = ({ count, onDelete, onSubmit }: CheckModalProps) => {
   const handleSubmit = async () => {
     if (saveCheckType === "제출") {
       try {
-        const isSuccess = await onSubmit();
+        const isSuccess = await onSubmit!();
         if (isSuccess) {
           openSuccessSubmit("제출");
         }

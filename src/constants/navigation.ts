@@ -27,9 +27,9 @@ export const navigationItems = [
   { text: "사용자 목록", url: "/users", icon: Users, roles: ["admin"] },
   {
     text: "계산서 통합 조회",
-    url: "/lookup",
+    url: "/adminHub",
     icon: ListSearch,
-    roles: ["dealership", "admin"],
+    roles: ["admin"],
   },
   {
     text: "공동인증서 등록",
