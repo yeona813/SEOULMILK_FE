@@ -19,8 +19,8 @@ interface ConditionSearchState {
   removeTag: (type: "supplier" | "recipient", tag: string) => void;
   fetchSearchData: (
     page: number,
-    status: string | undefined,
-    userType: "admin" | "employee"
+    userType: "admin" | "employee",
+    status?: string | undefined
   ) => Promise<HomeNtsTaxData | NtsTaxHubData | undefined>;
 }
 

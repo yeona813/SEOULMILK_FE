@@ -21,8 +21,8 @@ const VerifyPage = () => {
       else {
         const data = await fetchSearchData(
           currentPage,
-          currentStatus,
-          "employee"
+          "employee",
+          currentStatus
         );
         useDataTaxStore.getState().setData(data as HomeNtsTaxData);
       }

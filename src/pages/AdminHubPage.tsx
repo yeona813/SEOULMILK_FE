@@ -77,7 +77,7 @@ const AdminHubPage = () => {
     const fetchAndSetData = async () => {
       if (!isSearchMode) fetchData();
       else {
-        const data = await fetchSearchData(currentPage, currentStatus, "admin");
+        const data = await fetchSearchData(currentPage, "admin", currentStatus);
         if (data) {
           setData(data as NtsTaxHubData);
         }

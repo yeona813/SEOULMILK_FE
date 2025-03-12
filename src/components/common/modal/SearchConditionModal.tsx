@@ -58,7 +58,7 @@ const SearchConditionModal = ({
 
   const handleSubmit = async () => {
     if (!isSearchMode) {
-      const data = await fetchSearchData(page, status, userType);
+      const data = await fetchSearchData(page, userType, status);
 
       if (!data) {
         console.error("검색 데이터를 가져오지 못했습니다.");
