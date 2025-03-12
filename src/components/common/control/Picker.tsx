@@ -1,4 +1,4 @@
-import { useTaxStore } from "@/stores/useVerifyStore";
+import { useDataTaxStore } from "@/stores/useVerifyStore";
 import { useState } from "react";
 
 interface PickerProps {
@@ -25,7 +25,7 @@ const Picker = ({ correctCount, inCorrectCount }: PickerProps) => {
     },
   ];
 
-  const { setStatus } = useTaxStore();
+  const { setStatus } = useDataTaxStore();
   const [currentPick, setCurrentPick] = useState<PickType>(PickType.CORRECT);
 
   const currentIndex = allOptions.findIndex(

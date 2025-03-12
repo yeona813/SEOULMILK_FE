@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/locale";
@@ -64,16 +64,26 @@ const CustomHeader = ({ date, changeMonth }: CustomHeaderProps) => {
   );
 };
 
-const SearchDatePicker = () => {
-  const [startDate, setStartDate] = useState<Date | null>(null);
+interface SearchDatePickerProps {
+  setDate: (date: Date | null) => void;
+  selectedDate?: Date | null; // ✅ 기존 선택된 날짜 유지
+}
+
+const SearchDatePicker = ({ setDate, selectedDate }: SearchDatePickerProps) => {
+  const [startDate, setStartDate] = useState<Date | null>(selectedDate || null);
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [temporaryDate, setTemporaryDate] = useState<Date | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    setStartDate(selectedDate || null); // ✅ 기존 선택된 날짜가 있으면 업데이트
+  }, [selectedDate]);
 
   const handleMonthChange = (date: Date) => {
     setTemporaryDate(null);
     setCurrentMonth(date);
   };
+
   const handleClickOutside = () => {
     setTemporaryDate(null);
     setIsOpen(false);
@@ -85,14 +95,14 @@ const SearchDatePicker = () => {
 
   const handleConfirm = () => {
     if (temporaryDate) {
-      setStartDate(temporaryDate);
+      setDate(temporaryDate);
+      setStartDate(temporaryDate); // ✅ 선택한 날짜를 상태에 반영
     }
     setIsOpen(false);
   };
 
   const handleInputClick = () => {
     setIsOpen(true);
-    console.log(startDate);
   };
 
   return (
@@ -102,7 +112,7 @@ const SearchDatePicker = () => {
         onClick={handleInputClick}
       >
         <div className="w-full">
-          {temporaryDate ? format(temporaryDate, "yyyy/MM/dd") : "YYYY/MM/DD"}
+          {startDate ? format(startDate, "yyyy/MM/dd") : "YYYY/MM/DD"}
         </div>
         <div className="w-[36px] h-full center border-l border-solid border-gray-200">
           <img src="/assets/icons/calendar.svg" alt="캘린더" />
@@ -111,24 +121,23 @@ const SearchDatePicker = () => {
       {isOpen && (
         <div>
           <DatePicker
-            selected={temporaryDate} // 임시 선택된 날짜
-            onChange={handleDateChange} // 날짜 변경 시 임시 날짜 설정
+            selected={temporaryDate || startDate} // ✅ 기존 선택된 날짜 유지
+            onChange={handleDateChange}
             dateFormat="yyyy/MM/dd"
             placeholderText="YYYY/MM/DD"
             locale={ko}
             renderDayContents={(day, date) => {
-              return date.getMonth() === currentMonth.getMonth() ? day : ""; // 현재 달에만 날짜 표시
+              return date.getMonth() === currentMonth.getMonth() ? day : "";
             }}
-            onMonthChange={handleMonthChange} // 달 변경 시 호출
-            renderCustomHeader={(props) => <CustomHeader {...props} />} // "확인" 버튼을 추가한 헤더 렌더링
-            shouldCloseOnSelect={false} // 날짜를 클릭해도 달력이 자동으로 닫히지 않도록 설정
-            open={isOpen} // 달력이 열리거나 닫히는 상태를 제어
-            onClickOutside={handleClickOutside} // 달력 외부 클릭 시 닫기
+            onMonthChange={handleMonthChange}
+            renderCustomHeader={(props) => <CustomHeader {...props} />}
+            shouldCloseOnSelect={false}
+            open={isOpen}
+            onClickOutside={handleClickOutside}
             showPopperArrow={false}
           >
-            {/* "완료" 버튼을 선택된 날짜가 있을 때만 활성화 */}
             <button
-              disabled={!temporaryDate} // 선택된 날짜가 없으면 비활성화
+              disabled={!temporaryDate}
               onClick={handleConfirm}
               className="w-full h-8 bg-secondary-500 rounded-[4px] text-white b3 disabled:bg-secondary-50"
             >
