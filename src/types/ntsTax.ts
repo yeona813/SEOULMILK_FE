@@ -11,6 +11,8 @@ export interface NtsTax {
   chargeTotal: string;
   taxTotal: string;
   ar?: string;
+  issueAt?: string;
+  createdDate?: string;
   createdAt?: string;
   createdTime?: string;
   imageUrl?: string;

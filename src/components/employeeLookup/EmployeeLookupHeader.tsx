@@ -62,7 +62,7 @@ const EmployeeLookupHeader = ({
   return (
     <div className="w-[1240px] 3xl:w-[1560px] mt-[37px]">
       <div className="flex">
-        <h1 className="h1 text-grayScale-900">이번 달 결과조회</h1>
+        <h1 className="h1 text-grayScale-900">계산서 통합 조회</h1>
         <div className="flex h-full pt-[20px] b3 text-grayScale-700 ml-2">
           전체 {totalElements}건
         </div>

@@ -7,16 +7,25 @@ const EditableInvoiceDetails = () => {
     return <div className="my-4 text-center">데이터가 없습니다.</div>;
   }
 
-  const handleInputChange = (field: keyof TaxInvoiceDetails, value: string) => {
-    // 승인번호 입력 시, 8자리마다 '-'을 추가하는 로직
-    if (field === "issueId") {
-      value = value.replace(/\D/g, ""); // 숫자만 허용
-      if (value.length > 8) {
-        value = value.slice(0, 8); // 최대 8자리까지만 입력
-      }
-      value = value.replace(/(\d{4})(\d{4})/, "$1-$2"); // 8자리마다 '-' 추가
+  const handleInputChange = (f: keyof TaxInvoiceDetails, v: string) => {
+    if (f === "issueId") {
+      v = v.replace(/\D/g, "").slice(0, 24); // 숫자만 허용 + 최대 24자리 제한
+      v = v.replace(/(\d{8})(\d{8})?(\d{8})?/, (_, p1, p2, p3) =>
+        [p1, p2, p3].filter(Boolean).join("-")
+      ); // 8자리마다 "-" 추가
+    } else if (f === "suId" || f === "ipId") {
+      v = v.replace(/\D/g, "").slice(0, 10); // 숫자만 허용 + 최대 10자리 제한
+      if (v.length > 3) v = v.replace(/^(\d{3})(\d)/, "$1-$2");
+      if (v.length > 6) v = v.replace(/^(\d{3})-(\d{2})(\d{1,5})/, "$1-$2-$3");
+    } else if (f === "issueAt" || f === "createdDate") {
+      v = v.replace(/\D/g, "").slice(0, 8); // 숫자만 허용 + 최대 8자리 제한
+      if (v.length > 4) v = v.replace(/^(\d{4})(\d{2})/, "$1.$2");
+      if (v.length > 6) v = v.replace(/^(\d{4})\.(\d{2})(\d{2})/, "$1.$2.$3");
+    } else if (f === "chargeTotal" || f === "taxTotal" || f === "grandTotal") {
+      v = v.replace(/\D/g, ""); // 숫자만 허용
+      v = Number(v).toLocaleString(); // 세 자리마다 콤마(,) 추가
     }
-    updateInvoice(field as keyof TaxInvoiceDetails, value); // Cast the field to keyof TaxInvoiceDetails
+    updateInvoice(f, v);
   };
 
   const primaryData = {
@@ -42,18 +51,18 @@ const EditableInvoiceDetails = () => {
       invoice.chargeTotal,
     ],
     placeholders: [
-      "승인번호를 입력하세요",
-      "작성일자를 입력하세요",
-      "공급자 사업등록번호를 입력하세요",
-      "공급 받는자 사업자등록번호를 입력하세요",
-      "공급가액을 입력하세요",
+      "12345678-12345678-12345678",
+      "2024.01.01",
+      "123-12-12345",
+      "123-12-12345",
+      "9,999,999",
     ],
     validations: [
-      (value: string) => value.trim() !== "", // 필수 입력
-      (value: string) => /^[\d-]+$/.test(value), // 날짜 형식 검증 (예: yyyy-mm-dd)
-      (value: string) => /^[0-9]{10}$/.test(value), // 사업자등록번호 (예: 10자리 숫자)
-      (value: string) => /^[0-9]{10}$/.test(value), // 사업자등록번호 (예: 10자리 숫자)
-      (value: string) => !isNaN(Number(value)) && Number(value) > 0, // 숫자만 허용
+      () => true, // 필수 입력 제거 → 빈 값 허용
+      () => true,
+      () => true,
+      () => true,
+      () => true,
     ],
   };
 
@@ -74,16 +83,16 @@ const EditableInvoiceDetails = () => {
       invoice.createdTime.slice(0, 5),
     ],
     placeholders: [
-      "총세액 합계를 입력하세요",
-      "합계금액을 입력하세요",
-      "매출매입구분을 선택하세요",
+      "9,999,999",
+      "9,999,999",
+      "",
       "", // 생성일은 static이므로 placeholder가 필요 없음
       "", // 생성시간은 static이므로 placeholder가 필요 없음
     ],
     validations: [
-      (value: string) => !isNaN(Number(value)) && Number(value) > 0, // 총세액 합계는 숫자만 허용
-      (value: string) => !isNaN(Number(value)) && Number(value) > 0, // 합계금액은 숫자만 허용
-      (value: string) => value.trim() !== "", // 매출매입구분 필수 입력
+      () => true,
+      () => true,
+      () => true, // 매출매입구분 필수 입력
       () => true, // 생성일은 static이므로 검증 필요 없음
       () => true, // 생성시간은 static이므로 검증 필요 없음
     ],
@@ -106,14 +115,14 @@ const EditableInvoiceDetails = () => {
           <div className="w-full border-l border-solid rounded-r-lg border-grayScale-200 bg-grayScale-25">
             <div className="ml-[18px] mr-[26px] my-[7px] b5 flex flex-col gap-2">
               {primaryData.fields.map((field, index) => (
-                <div key={index} className="w-full flex flex-col gap-1">
+                <div key={index} className="flex flex-col w-full gap-1">
                   <input
                     type="text"
                     value={primaryData.values[index]}
                     placeholder={primaryData.placeholders[index]}
                     onChange={(e) => {
                       const value = e.target.value;
-                      const isValid = primaryData.validations[index](value);
+                      const isValid = primaryData.validations[index]();
                       if (isValid) {
                         handleInputChange(field, value);
                       } else {
@@ -161,7 +170,7 @@ const EditableInvoiceDetails = () => {
                     placeholder={secondaryData.placeholders[index]}
                     onChange={(e) => {
                       const value = e.target.value;
-                      const isValid = secondaryData.validations[index](value);
+                      const isValid = secondaryData.validations[index]();
                       if (isValid) {
                         handleInputChange(field, value);
                       } else {

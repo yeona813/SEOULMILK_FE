@@ -7,6 +7,7 @@ import { useDrawerStore } from "@/stores/useDrawerStore";
 import EmptyData from "../common/EmptyData";
 import { useSelectionStore } from "@/stores/useSelectionStore";
 import Tag from "../common/notification/Tag";
+import { useDataTaxStore } from "@/stores/useVerifyStore";
 
 interface SubmitTableProps {
   data: employeeTax[];
@@ -23,10 +24,11 @@ const VerifyTable = ({
   const { checkedItems, selectAll, setCheckedItems, setSelectAll } =
     useSelectionStore();
   const [selectedItem, setSelectedItem] = useState<employeeTax | null>(null);
-
+  const { currentStatus } = useDataTaxStore();
   const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
 
   useEffect(() => {
+    setSelectAll(false);
     setCheckedItems([]); // 초기화
   }, [data, setCheckedItems]);
 
@@ -58,7 +60,8 @@ const VerifyTable = ({
       }
     });
   };
-
+  const statusCount =
+    currentStatus === "APPROVAL" ? (correctCount ?? 0) : (inCorrectCount ?? 0);
   return (
     <div className=" w-[1240px] 3xl:w-[1560px] max-h-[597px] h-fit 3xl:max-h-[664px] 3xl:h-fit border border-solid border-grayScale-200 rounded bg-white overflow-y-auto overflow-x-hidden mb-[49px]">
       <div className="sticky top-0 flex flex-wrap h-10 text-left bg-white border-b border-solid border-grayScale-200 b5 text-grayScale-500">
@@ -111,20 +114,17 @@ const VerifyTable = ({
           ntsTaxId={selectedItem.ntsTaxId}
         />
       )}
-      {checkedItems.length > 0 && (
+      {selectAll && (
         <div className="left-1/2 translate-x-[-50%] translate-y-[-50%] absolute top-[55px] px-5 py-2 border border-secondary-300 bg-white flex rounded-xl shadow-lg w-[573px] gap-[6px] items-center">
           <img src="/assets/icons/info.svg" alt="info" />
           {isAllChecked ? (
             <div className="flex justify-between w-full b3 text-grayScale-700">
               <div className="flex gap-[2px]">
                 전체 페이지에 있는 항목
-                <Tag
-                  text={`${(correctCount || 0) + (inCorrectCount || 0)}건`}
-                />
-                이 모두 선택되었습니다.
+                <Tag text={`${statusCount}건`} />이 모두 선택되었습니다.
               </div>
               <p
-                className="border-b text-secondary-500 b3 border-b-secondary-500 cursor-pointer"
+                className="border-b cursor-pointer text-secondary-500 b3 border-b-secondary-500"
                 onClick={() => {
                   setIsAllChecked(false);
                   setCheckedItems([]);
@@ -139,18 +139,20 @@ const VerifyTable = ({
               <div className="flex gap-[2px]">
                 이 페이지에 있는 항목
                 <Tag
-                  text={`${(correctCount || 0) + (inCorrectCount || 0) === 13 ? 13 : ((correctCount || 0) + (inCorrectCount || 0)) % 13}`}
+                  text={`${
+                    statusCount >= 13 ? 13 : statusCount % 13 || statusCount
+                  }`}
                 />
                 건만 선택되었습니다.
               </div>
               <p
-                className="border-b text-secondary-500 b3 border-b-secondary-500 cursor-pointer"
+                className="border-b cursor-pointer text-secondary-500 b3 border-b-secondary-500"
                 onClick={() => {
                   setIsAllChecked(true);
                   handleSelectAllPage(true);
                 }}
               >
-                전체 {(correctCount || 0) + (inCorrectCount || 0)} 건 모두 선택
+                전체 {statusCount} 건 모두 선택
               </p>
             </div>
           )}

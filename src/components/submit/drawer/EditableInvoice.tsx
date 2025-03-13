@@ -9,7 +9,45 @@ const EditableInvoice = () => {
   }
 
   const handleInputChange = (field: keyof NtsTax, value: string) => {
-    updateInvoice(field as keyof NtsTax, value);
+    let formattedValue = value;
+
+    // 승인번호 (12345678-12345678-12345678)
+    if (field === "issueId") {
+      formattedValue = formattedValue.replace(/\D/g, "").slice(0, 24); // 숫자만 허용 + 최대 24자리 제한
+      formattedValue = formattedValue.replace(
+        /(\d{8})(\d{8})?(\d{8})?/,
+        (_, p1, p2, p3) => [p1, p2, p3].filter(Boolean).join("-")
+      );
+    }
+    // 사업자등록번호 (123-12-12345)
+    else if (field === "suId" || field === "ipId") {
+      formattedValue = formattedValue.replace(/\D/g, "").slice(0, 10);
+      if (formattedValue.length > 3)
+        formattedValue = formattedValue.replace(/^(\d{3})(\d)/, "$1-$2");
+      if (formattedValue.length > 6)
+        formattedValue = formattedValue.replace(
+          /^(\d{3})-(\d{2})(\d{1,5})/,
+          "$1-$2-$3"
+        );
+    }
+    // 날짜 (YYYY.MM.DD)
+    else if (field === "issueAt" || field === "createdDate") {
+      formattedValue = formattedValue.replace(/\D/g, "").slice(0, 8);
+      if (formattedValue.length > 4)
+        formattedValue = formattedValue.replace(/^(\d{4})(\d{2})/, "$1.$2");
+      if (formattedValue.length > 6)
+        formattedValue = formattedValue.replace(
+          /^(\d{4})\.(\d{2})(\d{2})/,
+          "$1.$2.$3"
+        );
+    }
+    // 금액 필드 (숫자만 허용, 세 자리마다 콤마 추가)
+    else if (["chargeTotal", "taxTotal", "grandTotal"].includes(field)) {
+      formattedValue = formattedValue.replace(/\D/g, ""); // 숫자만 허용
+      formattedValue = Number(formattedValue).toLocaleString(); // 세 자리마다 콤마 추가
+    }
+
+    updateInvoice(field, formattedValue);
   };
 
   const primaryData = {
@@ -34,6 +72,13 @@ const EditableInvoice = () => {
       selectedItem.ipId,
       selectedItem.chargeTotal,
     ],
+    placeholders: [
+      "12345678-12345678-12345678",
+      "2024.01.01",
+      "123-12-12345",
+      "123-12-12345",
+      "9,999,999",
+    ],
   };
 
   const secondaryData = {
@@ -52,6 +97,7 @@ const EditableInvoice = () => {
       selectedItem.createdAt,
       selectedItem.createdTime,
     ],
+    placeholders: ["9,999,999", "9,999,999", "", "", ""],
   };
 
   return (
@@ -75,6 +121,7 @@ const EditableInvoice = () => {
                   key={index}
                   type="text"
                   value={primaryData.values[index]}
+                  placeholder={primaryData.placeholders[index]}
                   onChange={(e) => handleInputChange(field, e.target.value)}
                   className="w-full px-[10px] border border-solid rounded h-7 bg-inherit border-grayScale-300 text-grayScale-900 focus:ring-1 focus:ring-secondary-500 focus:outline-none focus:caret-secondary-500"
                 />
@@ -102,7 +149,7 @@ const EditableInvoice = () => {
           <div className="w-full border-l border-solid rounded-r-lg border-grayScale-200 bg-grayScale-25">
             <div className="ml-[18px] mr-[26px] my-[7px] b5 flex flex-col gap-2">
               {secondaryData.fields.map((field, index) =>
-                index >= 2 ? ( // From "매출매입구분" onwards, use static div instead of input
+                index >= 2 ? (
                   <div key={index} className="flex items-center w-full h-7">
                     {secondaryData.values[index]}
                   </div>
@@ -111,6 +158,7 @@ const EditableInvoice = () => {
                     key={index}
                     type="text"
                     value={secondaryData.values[index]}
+                    placeholder={secondaryData.placeholders[index]}
                     onChange={(e) => handleInputChange(field, e.target.value)}
                     className="w-full px-[10px] border border-solid rounded h-7 bg-inherit border-grayScale-300 text-grayScale-900 focus:ring-1 focus:ring-secondary-500 focus:outline-none focus:caret-secondary-500"
                   />
@@ -127,4 +175,5 @@ const EditableInvoice = () => {
     </div>
   );
 };
+
 export default EditableInvoice;
