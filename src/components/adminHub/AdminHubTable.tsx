@@ -81,7 +81,7 @@ const AdminHubTable = ({
             공급가액
           </div>
           <div className="w-[61px] flex items-center text-center">
-            변환 결과
+            검증 결과
           </div>
         </div>
         <div>
@@ -100,7 +100,7 @@ const AdminHubTable = ({
                   retailer={item.ipName}
                   date={item.issueDate}
                   amount={item.grandTotal}
-                  validationResult={item.isSuccess === "SUCCESS"}
+                  validationResult={item.status === "APPROVAL"}
                   onCheckChange={(checked) =>
                     handleCheckChange(checked, item.ntsTaxId!)
                   }

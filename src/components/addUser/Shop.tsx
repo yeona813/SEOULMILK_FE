@@ -3,6 +3,7 @@ import ShopDownloadXlsx from "./ShopDownloadXlsx";
 import ShopUpload from "./ShopUploader";
 import ShopTable from "./ShopTable";
 import { useState } from "react";
+import { postInviteAgency } from "@/api/admin";
 
 interface ShopProps {
   data: AgencyData | null;
@@ -11,6 +12,10 @@ interface ShopProps {
 const Shop = ({ data }: ShopProps) => {
   const [checkedItem, setCheckedItem] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
+
+  const handleClick = async () => {
+    await postInviteAgency(checkedItem);
+  };
 
   return (
     <div className="flex flex-col h-full gap-4">
@@ -27,7 +32,15 @@ const Shop = ({ data }: ShopProps) => {
           <button className="px-[18px] py-2 rounded-lg bg-secondary-500 text-white b3 hover:bg-secondary-700 h-fit">
             신규등록
           </button>
-          <button className="px-[22px] py-3 rounded-lg bg-grayScale-600 text-white b3 hover:bg-secondary-700">
+          <button
+            className={`px-[22px] py-3 rounded-lg text-white b3 ${
+              checkedItem.length === 0
+                ? "bg-grayScale-400 text-grayScale-300 cursor-not-allowed"
+                : "bg-grayScale-600 hover:bg-grayScale-700"
+            }`}
+            disabled={checkedItem.length === 0}
+            onClick={handleClick}
+          >
             초대 메일 발송
           </button>
         </div>

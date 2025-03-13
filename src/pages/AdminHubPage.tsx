@@ -1,4 +1,9 @@
-import { deleteNtsTaxIds, getAdminNtsTax, postCheckedCSV } from "@/api/admin";
+import {
+  deleteNtsTaxIds,
+  getAdminNtsTax,
+  getNtsTaxCSV,
+  postCheckedCSV,
+} from "@/api/admin";
 import AdminHubHeader from "@/components/adminHub/AdminHubHeader";
 import AdminHubTable from "@/components/adminHub/AdminHubTable";
 import Pagination from "@/components/common/control/Pagination";
@@ -21,6 +26,8 @@ const AdminHubPage = () => {
   const { isSaveCheckOpen, closeSaveCheck, isSearchConditionOpen } =
     useModalStore();
   const { isSearchMode, fetchSearchData } = useConditionSearchStore();
+  const { startMonth, endMonth, supplierTags, recipientTags } =
+    useConditionSearchStore();
 
   const fetchData = async () => {
     const response = await getAdminNtsTax(currentPage - 1, currentStatus);
@@ -57,7 +64,14 @@ const AdminHubPage = () => {
   const handleSubmit = async () => {
     try {
       if (isAllChecked) {
-        console.log("여기 다시 구현해야해");
+        const response = await getNtsTaxCSV(
+          startMonth,
+          endMonth,
+          supplierTags,
+          recipientTags,
+          currentStatus
+        );
+        downloadCSV(response);
       } else {
         const response = await postCheckedCSV(checkedItem);
         downloadCSV(response);

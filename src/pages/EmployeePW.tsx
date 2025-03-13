@@ -1,3 +1,4 @@
+import { postFindPW } from "@/api/employee";
 import EmployeeForm from "@/components/employeePW/EmployeeForm";
 import PasswordForm from "@/components/employeePW/PasswordForm";
 import VerificationForm from "@/components/employeePW/VerificationForm";
@@ -6,22 +7,41 @@ import { useState } from "react";
 const EmployeePW = () => {
   const [stage, setStage] = useState(0);
   const [employeeNum, setEmployeeNum] = useState("");
+  const [email, setEmail] = useState("");
+
+  const handleClickOTP = async () => {
+    const success = await postFindPW(employeeNum, email);
+
+    return success || false;
+  };
 
   const renderStep = () => {
     switch (stage) {
       case 0:
         return (
-          <EmployeeForm setStage={setStage} setEmployeeNum={setEmployeeNum} />
+          <EmployeeForm
+            setStage={setStage}
+            setEmployeeNum={setEmployeeNum}
+            setEmail={setEmail}
+          />
         );
       case 1:
         return (
-          <VerificationForm setStage={setStage} employeeNum={employeeNum} />
+          <VerificationForm
+            setStage={setStage}
+            employeeNum={employeeNum}
+            handleClick={handleClickOTP}
+          />
         );
       case 2:
         return <PasswordForm employeeNum={employeeNum} />;
       default:
         return (
-          <EmployeeForm setStage={setStage} setEmployeeNum={setEmployeeNum} />
+          <EmployeeForm
+            setStage={setStage}
+            setEmployeeNum={setEmployeeNum}
+            setEmail={setEmail}
+          />
         );
     }
   };

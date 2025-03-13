@@ -2,24 +2,32 @@ import { useForm } from "react-hook-form";
 import Button from "../common/button/Button";
 import { useEffect, useState } from "react";
 import { postOTPVerify } from "@/api/employee";
+import { postAgencyOTPVerify } from "@/api/agency";
+import { useInviteAgencyStore } from "@/stores/useInviteAgencyStore";
 
 interface VerificationFormProps {
   setStage: React.Dispatch<React.SetStateAction<number>>;
-  employeeNum: string;
+  employeeNum?: string;
+  handleClick: () => Promise<boolean>;
 }
 
 interface FormData {
   otpNumber: string;
 }
 
-const VerificationForm = ({ setStage, employeeNum }: VerificationFormProps) => {
+const VerificationForm = ({
+  setStage,
+  employeeNum,
+  handleClick,
+}: VerificationFormProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<FormData>({ mode: "onChange" });
-
+  const { email } = useInviteAgencyStore();
   const [timeLeft, setTimeLeft] = useState(5 * 60);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (timeLeft <= 0) return; // 타이머 종료
@@ -37,11 +45,31 @@ const VerificationForm = ({ setStage, employeeNum }: VerificationFormProps) => {
     return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
   };
 
-  const onSubmit = async (data: FormData) => {
-    const success = await postOTPVerify(employeeNum, data.otpNumber);
+  const resetTimer = async () => {
+    if (isLoading) return;
 
-    if (success) {
-      setStage(2);
+    setIsLoading(true);
+    const request = await handleClick();
+    setIsLoading(false);
+
+    if (request) {
+      setTimeLeft(5 * 60);
+    } else {
+      alert("메일 전송에 실패했습니다.");
+    }
+  };
+
+  const onSubmit = async (data: FormData) => {
+    if (employeeNum) {
+      const success = await postOTPVerify(employeeNum, data.otpNumber);
+      if (success) {
+        setStage(2);
+      }
+    } else if (email) {
+      const success = await postAgencyOTPVerify(email, data.otpNumber);
+      if (success) {
+        setStage(2);
+      }
     }
   };
 
@@ -71,11 +99,12 @@ const VerificationForm = ({ setStage, employeeNum }: VerificationFormProps) => {
         <div className="gap-4 center">
           <p className="st4 text-grayScale-800">{formatTime(timeLeft)}</p>
           <p
-            className={`border-b st4 ${
+            className={`border-b st4 cursor-pointer ${
               timeLeft === 0
                 ? "text-secondary-300 border-b-secondary-300"
                 : "text-grayScale-400 border-b-grayScale-400"
-            }`}
+            } hover:bg-grayScale-50 hover:rounded-lg`}
+            onClick={resetTimer}
           >
             인증번호 다시 받기
           </p>

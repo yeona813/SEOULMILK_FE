@@ -183,3 +183,84 @@ export const getAgencyList = async (page: number) => {
     console.error(error);
   }
 };
+
+/**
+ * 관리자 - 조회 조건 설정 시 csv 추출
+ *
+ * @param startMonth - 시작 날짜
+ * @param endMonth - 끝나는 날짜
+ * @param supplierTags - 공급자 목록
+ * @param recipientTags - 공급받는자 목록
+ * @param status - 상태
+ * @returns
+ */
+export const getNtsTaxCSV = async (
+  startMonth: Date | null,
+  endMonth: Date | null,
+  supplierTags: string[],
+  recipientTags: string[],
+  status?: string
+) => {
+  const accessToken = localStorage.getItem("accessToken");
+
+  const params = new URLSearchParams();
+
+  if (startMonth) {
+    params.append("startAt", startMonth.toISOString().split("T")[0]);
+  }
+  if (endMonth) {
+    params.append("endAt", endMonth.toISOString().split("T")[0]);
+  }
+
+  supplierTags.forEach((tag) => {
+    params.append("suNameList", tag);
+  });
+
+  recipientTags.forEach((tag) => {
+    params.append("ipNameList", tag);
+  });
+
+  try {
+    const url = status
+      ? `/admin/nts-tax/csv?status=${status}&${params.toString()}`
+      : `/admin/nts-tax/csv?${params.toString()}`;
+
+    const response = await api.get(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (response.data) {
+      return response.data.data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/**
+ * 관리자 - 대리점 초대 메일 발송
+ *
+ * @param idList - 초대할 idList
+ * @returns
+ */
+export const postInviteAgency = async (idList: number[]) => {
+  const accessToken = localStorage.getItem("accessToken");
+
+  try {
+    const response = await api.post(
+      "/admin/agency/invite",
+      { idList: idList },
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
+
+    if (response.data) {
+      return true;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};

@@ -5,6 +5,7 @@ import { postFindPW } from "@/api/employee";
 interface EmployeeFormProps {
   setStage: React.Dispatch<React.SetStateAction<number>>;
   setEmployeeNum: React.Dispatch<React.SetStateAction<string>>;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface FormData {
@@ -12,7 +13,11 @@ interface FormData {
   email: string;
 }
 
-const EmployeeForm = ({ setStage, setEmployeeNum }: EmployeeFormProps) => {
+const EmployeeForm = ({
+  setStage,
+  setEmployeeNum,
+  setEmail,
+}: EmployeeFormProps) => {
   const {
     register,
     handleSubmit,
@@ -24,6 +29,7 @@ const EmployeeForm = ({ setStage, setEmployeeNum }: EmployeeFormProps) => {
 
     if (success) {
       setEmployeeNum(data.employeeNum);
+      setEmail(data.email);
       setStage(1);
     }
   };

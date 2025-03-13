@@ -51,3 +51,74 @@ export const postAgencyLogin = async (
     return null;
   }
 };
+
+/**
+ * 대리점 - 회원가입
+ *
+ * @param agencyId
+ * @param password
+ * @param email
+ * @returns
+ */
+export const postAgencyRegister = async (
+  agencyId: string,
+  password: string,
+  email: string
+) => {
+  try {
+    const response = await api.post("/agency/register", {
+      agencyId,
+      password,
+      email,
+    });
+
+    if (response.data) {
+      return response.data.success;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/**
+ * 대리점점 - 인증코드 요청
+ *
+ * @param email
+ * @returns
+ */
+export const postRequestOTP = async (email: string) => {
+  try {
+    const response = await api.post("/agency/register/otp", {
+      email,
+    });
+
+    if (response.data) {
+      return true;
+    }
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+/**
+ * 대리점 - 인증코드 입력
+ *
+ * @param email - 이메일
+ * @param otpNumber - otp
+ * @returns
+ */
+export const postAgencyOTPVerify = async (email: string, otpNumber: string) => {
+  try {
+    const response = await api.post("/agency/register/otp/verify", {
+      email,
+      otpNumber,
+    });
+
+    if (response.data) {
+      return true;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};

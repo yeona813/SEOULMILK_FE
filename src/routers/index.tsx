@@ -9,10 +9,12 @@ import CertPage from "@/pages/CertPage";
 import AddUserPage from "@/pages/AddUserPage";
 import AdminHubPage from "@/pages/AdminHubPage";
 import EmployeePW from "@/pages/EmployeePW";
+import InvitePage from "@/pages/InvitePage";
 
 export const router = createBrowserRouter([
   { path: "/", element: <LoginPage /> },
   { path: "/employeePW", element: <EmployeePW /> },
+  { path: "/invite", element: <InvitePage /> },
   {
     path: "/",
     element: <Layout />,

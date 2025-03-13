@@ -14,6 +14,7 @@ export interface NtsTax {
   createdAt?: string;
   createdTime?: string;
   imageUrl?: string;
+  status?: string;
 }
 
 export interface NtsTaxData {
