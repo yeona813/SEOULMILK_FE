@@ -11,7 +11,7 @@ import { NtsTaxHubData } from "@/types/ntsTax";
 
 interface SearchConditionModalProps {
   page: number;
-  status: "APPROVAL" | "REJECTION" | undefined;
+  status: "APPROVAL" | "REJECTION" | "" | undefined;
   userType: "admin" | "employee";
   setData?: React.Dispatch<React.SetStateAction<NtsTaxHubData | null>>;
 }

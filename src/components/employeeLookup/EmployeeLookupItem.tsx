@@ -25,7 +25,7 @@ interface SubmitTableItemProps {
  * @param {(checked: boolean) => void} onCheckChange - 체크박스 상태 변경 시 호출되는 함수
  * @return
  */
-const VerifyTableItem = ({
+const EmployeeLookupItem = ({
   check,
   number,
   supplier,
@@ -96,4 +96,4 @@ const VerifyTableItem = ({
     </div>
   );
 };
-export default VerifyTableItem;
+export default EmployeeLookupItem;

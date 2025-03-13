@@ -1,6 +1,5 @@
 import File from "@/assets/icons/file.svg?react";
 import FileSearch from "@/assets/icons/fileSearch.svg?react";
-import Users from "@/assets/icons/users.svg?react";
 import ListSearch from "@/assets/icons/listSearch.svg?react";
 import AddUser from "@/assets/icons/addUser.svg?react";
 import FileLock from "@/assets/icons/fileLock.svg?react";
@@ -24,12 +23,17 @@ export const navigationItems = [
     icon: AddUser,
     roles: ["admin"],
   },
-  { text: "사용자 목록", url: "/users", icon: Users, roles: ["admin"] },
   {
     text: "계산서 통합 조회",
     url: "/adminHub",
     icon: ListSearch,
-    roles: ["admin"],
+    roles: ["dealership", "admin"],
+  },
+  {
+    text: "계산서 통합 조회",
+    url: "/employee-lookup",
+    icon: ListSearch,
+    roles: ["headquarters"],
   },
   {
     text: "공동인증서 등록",

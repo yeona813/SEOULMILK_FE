@@ -19,7 +19,7 @@ const SuccessTextModal = ({ count }: SuccessTextModalProps) => {
     "대리점 등록": "대리점이 회원가입 시 계정이 활성화됩니다.",
     저장: (
       <div className="flex gap-[2px] items-center">
-        <Tag text={`${count}건`} />의 계정에 초대 메일을 발송했습니다.
+        대리점에 초대 메일이 발송되었습니다.
       </div>
     ),
     삭제: (

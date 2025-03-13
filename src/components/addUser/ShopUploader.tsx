@@ -56,7 +56,7 @@ const ShopUpload = () => {
       // ✅ API 요청
       const success = await postAddShop(shops);
       if (success) {
-        openSuccessText("사원 등록");
+        openSuccessText("대리점 등록");
       }
     } catch (error) {
       console.error("Error during file processing:", error);

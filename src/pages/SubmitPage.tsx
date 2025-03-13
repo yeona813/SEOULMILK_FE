@@ -30,6 +30,7 @@ const SubmitPage = () => {
     isSaveCheckOpen,
     isSuccessSubmit,
     closeSaveCheck,
+    openSuccessSubmit,
   } = useModalStore();
   const { isFailDrawerOpen } = useEditDrawerStore();
 
@@ -78,6 +79,7 @@ const SubmitPage = () => {
       setCheckedItem([]);
       setIsAllChecked(false);
       setOpenInfo(false);
+      openSuccessSubmit("제출");
       closeSaveCheck();
       fetchData();
     } catch (error) {
@@ -87,46 +89,48 @@ const SubmitPage = () => {
   };
 
   return (
-    <div className="relative flex flex-col items-center w-full h-full gap-4 bg-grayScale-25">
-      <SubmitHeader
-        isSuccess={isSuccess}
-        setIsSuccess={setIsSuccess}
-        correctCount={data?.successElements || 0}
-        inCorrectCount={data?.failedElements || 0}
-        checkedItem={checkedItem}
-      />
-      {data ? (
-        <SubmitTable
-          data={data?.ntsTaxList ?? []}
-          checkedItem={checkedItem}
-          setCheckedItem={setCheckedItem}
+    <>
+      <div className="relative flex flex-col items-center w-full h-full gap-4 bg-grayScale-25">
+        <SubmitHeader
+          isSuccess={isSuccess}
+          setIsSuccess={setIsSuccess}
           correctCount={data?.successElements || 0}
           inCorrectCount={data?.failedElements || 0}
-          isSuccess={isSuccess}
-          isAllChecked={isAllChecked}
-          setIsAllChecked={setIsAllChecked}
-          openInfo={openInfo}
-          setOpenInfo={setOpenInfo}
+          checkedItem={checkedItem}
         />
-      ) : (
-        <p>데이터 없음</p>
-      )}
-      <Pagination
-        totalPage={data?.totalPage || 1}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
-      {isUploadOpen && <UploadModal fetchData={fetchData} />}
-      {isConvertOpen && <ConvertModal />}
-      {isSaveCheckOpen && (
-        <CheckModal
-          count={checkedItem.length}
-          onDelete={handleDelete}
-          onSubmit={handleSubmit}
+        {data ? (
+          <SubmitTable
+            data={data?.ntsTaxList ?? []}
+            checkedItem={checkedItem}
+            setCheckedItem={setCheckedItem}
+            correctCount={data?.successElements || 0}
+            inCorrectCount={data?.failedElements || 0}
+            isSuccess={isSuccess}
+            isAllChecked={isAllChecked}
+            setIsAllChecked={setIsAllChecked}
+            openInfo={openInfo}
+            setOpenInfo={setOpenInfo}
+          />
+        ) : (
+          <p>데이터 없음</p>
+        )}
+        <Pagination
+          totalPage={data?.totalPage || 1}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
         />
-      )}
-      {isSuccessSubmit && <SuccessModal count={checkedItem.length} />}
-    </div>
+        {isUploadOpen && <UploadModal fetchData={fetchData} />}
+        {isConvertOpen && <ConvertModal />}
+        {isSaveCheckOpen && (
+          <CheckModal
+            count={checkedItem.length}
+            onDelete={handleDelete}
+            onSubmit={handleSubmit}
+          />
+        )}
+      </div>
+      {isSuccessSubmit && <SuccessModal />}
+    </>
   );
 };
 

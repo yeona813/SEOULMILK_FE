@@ -51,7 +51,9 @@ const SubmitHeader = ({
           <Button
             size="medium"
             color="green"
-            onClick={() => openSaveCheck("제출")}
+            onClick={() => {
+              openSaveCheck("제출");
+            }}
             disabled={checkedItem.length === 0 || isSuccess === "FAILED"}
           >
             <div className="flex items-center gap-1">

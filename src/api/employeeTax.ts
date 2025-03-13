@@ -1,8 +1,6 @@
 import { OCRFile } from "@/stores/useModalStore";
 import { api } from ".";
 
-const accessToken = localStorage.getItem("accessToken");
-
 /**
  * 세금 계산서 목록 조회
  *
@@ -10,9 +8,10 @@ const accessToken = localStorage.getItem("accessToken");
  * @returns
  */
 export const getEmployeeTax = async (page: number, status: string) => {
+  const accessToken = localStorage.getItem("accessToken");
   try {
     const response = await api.get(
-      `/employee/nts-tax/view-hometax/recent?page=${page}&isSuccess=${status}`,
+      `/employee/nts-tax/view-hometax/recent?page=${page}&status=${status}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -27,7 +26,32 @@ export const getEmployeeTax = async (page: number, status: string) => {
   }
 };
 
+export const getEmployeeAllTax = async (page: number, status: string) => {
+  const accessToken = localStorage.getItem("accessToken");
+
+  try {
+    let url = `/employee/nts-tax/view-hometax/history?page=${page}`;
+
+    if (status.trim()) {
+      url += `&status=${status}`;
+    }
+
+    const response = await api.get(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (response.data) {
+      return response.data.data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const getIndividualEmployeeTax = async (id: number) => {
+  const accessToken = localStorage.getItem("accessToken");
   try {
     const response = await api.get(`/employee/nts-tax/${id}`, {
       headers: {
@@ -58,6 +82,7 @@ export const putIndividualEmployeeTax = async (
   id: number,
   data: TaxInvoiceUpdateRequest
 ) => {
+  const accessToken = localStorage.getItem("accessToken");
   try {
     const response = await api.put(`/employee/nts-tax/${id}`, data, {
       headers: {
@@ -72,6 +97,7 @@ export const putIndividualEmployeeTax = async (
 };
 
 export const revalidateEmployeeTax = async (id: number) => {
+  const accessToken = localStorage.getItem("accessToken");
   try {
     const response = await api.post(
       `/employee/nts-tax/${id}/revalidate`,
@@ -90,6 +116,7 @@ export const revalidateEmployeeTax = async (id: number) => {
 };
 
 export const getDownloadTax = async (imageUrl: string) => {
+  const accessToken = localStorage.getItem("accessToken");
   try {
     const response = await api.get(
       `/employee/nts-tax/download-image?imageUrl=${imageUrl}`,
@@ -130,6 +157,7 @@ function downloadBlob(blob: Blob, imageUrl: string) {
  * @returns
  */
 export const postEmployeeTaxUpload = async (files: FormData) => {
+  const accessToken = localStorage.getItem("accessToken");
   try {
     const response = await api.post("/nts-tax/upload", files, {
       headers: {
@@ -148,6 +176,7 @@ export const postEmployeeTaxUpload = async (files: FormData) => {
 };
 
 export const putEmployeeTaxEdit = async (data: OCRFile[]) => {
+  const accessToken = localStorage.getItem("accessToken");
   try {
     const response = await api.put("/nts-tax/edit", data, {
       headers: {
@@ -164,7 +193,47 @@ export const putEmployeeTaxEdit = async (data: OCRFile[]) => {
   }
 };
 
+export const deleteEmployeeTax = async (ntsTaxIds: number[]) => {
+  const accessToken = localStorage.getItem("accessToken");
 
+  try {
+    const response = await api.delete("/employee/nts-tax/multiple", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      data: {
+        ntsTaxId: ntsTaxIds,
+      },
+    });
 
+    if (response.data) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error("세금 계산서 데이터 삭제 실패", error);
+    throw error;
+  }
+};
 
+export const postEmployeeTaxCSV = async (ntsTaxIds: number[]) => {
+  const accessToken = localStorage.getItem("accessToken");
 
+  try {
+    const response = await api.post(
+      "/employee/nts-tax/csv",
+      { ntsTaxId: ntsTaxIds }, // 요청 본문 - curl의 -d 부분과 동일
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`, // curl의 Authorization 헤더와 동일
+          "Content-Type": "application/json", // curl의 Content-Type 헤더와 동일
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("CSV 추출 실패", error);
+    throw error;
+  }
+};

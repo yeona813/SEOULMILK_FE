@@ -4,6 +4,8 @@ import ShopUpload from "./ShopUploader";
 import ShopTable from "./ShopTable";
 import { useState } from "react";
 import { postInviteAgency } from "@/api/admin";
+import useModalStore from "@/stores/useModalStore";
+import SuccessTextModal from "../common/modal/SuccessTextModal";
 
 interface ShopProps {
   data: AgencyData | null;
@@ -12,9 +14,19 @@ interface ShopProps {
 const Shop = ({ data }: ShopProps) => {
   const [checkedItem, setCheckedItem] = useState<number[]>([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
+  const { openSuccessText, isSuccessText } = useModalStore();
 
   const handleClick = async () => {
-    await postInviteAgency(checkedItem);
+    try {
+      const success = await postInviteAgency(checkedItem);
+      if (success) {
+        openSuccessText("저장");
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setCheckedItem([]);
+    }
   };
 
   return (
@@ -56,6 +68,7 @@ const Shop = ({ data }: ShopProps) => {
       ) : (
         <p>데이터 없음</p>
       )}
+      {isSuccessText && <SuccessTextModal count={checkedItem.length} />}
     </div>
   );
 };

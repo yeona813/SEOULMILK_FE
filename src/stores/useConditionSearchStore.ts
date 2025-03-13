@@ -20,7 +20,7 @@ interface ConditionSearchState {
   fetchSearchData: (
     page: number,
     userType: "admin" | "employee",
-    status?: string | undefined
+    status?: string | null
   ) => Promise<HomeNtsTaxData | NtsTaxHubData | undefined>;
 }
 

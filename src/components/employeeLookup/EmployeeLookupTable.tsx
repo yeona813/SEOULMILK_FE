@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
+import { useSelectionStore } from "@/stores/useSelectionStore";
 import CheckBox from "../common/control/CheckBox";
-import VerifyTableItem from "./VerifyTableItem";
+import EmployeeLookupItem from "./EmployeeLookupItem";
 import { employeeTax } from "@/types/employeeTax";
 import VerifyDrawer from "../drawer/VerifyDrawer";
 import { useDrawerStore } from "@/stores/useDrawerStore";
 import EmptyData from "../common/EmptyData";
-import { useSelectionStore } from "@/stores/useSelectionStore";
 import Tag from "../common/notification/Tag";
 
 interface SubmitTableProps {
@@ -14,7 +14,7 @@ interface SubmitTableProps {
   inCorrectCount?: number;
 }
 
-const VerifyTable = ({
+const EmployeeLookupTable = ({
   data,
   correctCount,
   inCorrectCount,
@@ -60,7 +60,7 @@ const VerifyTable = ({
   };
 
   return (
-    <div className=" w-[1240px] 3xl:w-[1560px] max-h-[597px] h-fit 3xl:max-h-[664px] 3xl:h-fit border border-solid border-grayScale-200 rounded bg-white overflow-y-auto overflow-x-hidden mb-[49px]">
+    <div className="w-[1240px] 3xl:w-[1560px] max-h-[597px] h-fit 3xl:max-h-[664px] 3xl:h-fit border border-solid border-grayScale-200 rounded bg-white overflow-y-auto overflow-x-hidden mb-[49px]">
       <div className="sticky top-0 flex flex-wrap h-10 text-left bg-white border-b border-solid border-grayScale-200 b5 text-grayScale-500">
         <div className="w-[34px] ml-[15px] flex items-center">
           <CheckBox
@@ -83,9 +83,9 @@ const VerifyTable = ({
       </div>
       <div>
         {data.length > 0 ? (
-          data.map((item, index) => (
-            <VerifyTableItem
-              key={index}
+          data.map((item) => (
+            <EmployeeLookupItem
+              key={item.ntsTaxId}
               check={checkedItems.includes(item.ntsTaxId)}
               number={item.ntsTaxId}
               supplier={item.suName}
@@ -103,6 +103,7 @@ const VerifyTable = ({
           <EmptyData />
         )}
       </div>
+
       {isVerifyDrawerOpen && selectedItem && (
         <VerifyDrawer
           suName={selectedItem.suName}
@@ -111,6 +112,7 @@ const VerifyTable = ({
           ntsTaxId={selectedItem.ntsTaxId}
         />
       )}
+
       {checkedItems.length > 0 && (
         <div className="left-1/2 translate-x-[-50%] translate-y-[-50%] absolute top-[55px] px-5 py-2 border border-secondary-300 bg-white flex rounded-xl shadow-lg w-[573px] gap-[6px] items-center">
           <img src="/assets/icons/info.svg" alt="info" />
@@ -150,7 +152,8 @@ const VerifyTable = ({
                   handleSelectAllPage(true);
                 }}
               >
-                전체 {(correctCount || 0) + (inCorrectCount || 0)} 건 모두 선택
+                전체
+                {(correctCount || 0) + (inCorrectCount || 0)}건 모두 선택
               </p>
             </div>
           )}
@@ -160,4 +163,4 @@ const VerifyTable = ({
   );
 };
 
-export default VerifyTable;
+export default EmployeeLookupTable;

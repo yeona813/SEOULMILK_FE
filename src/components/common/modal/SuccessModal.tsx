@@ -1,17 +1,7 @@
 import useModalStore from "@/stores/useModalStore";
-import Tag from "../notification/Tag";
 import Modal from "./Modal";
 
-interface SuccessModalProps {
-  count: number;
-}
-
-/**
- *
- * @param count - 요청 완료 건수
- * @returns
- */
-const SuccessModal = ({ count }: SuccessModalProps) => {
+const SuccessModal = () => {
   const { closeSuccessSubmit, successType } = useModalStore();
 
   return (
@@ -25,9 +15,9 @@ const SuccessModal = ({ count }: SuccessModalProps) => {
         <span className="h2 text-grayScale-900">{successType} 완료</span>
         <div className="flex-col center b2 text-grayScale-500">
           <div className="flex gap-[2px] items-center">
-            {successType === "제출" ? "세금 계산서" : "CSV 파일에 세금 계산서"}
-            <Tag text={`${count}건`} />
-            {successType === "제출" ? "을" : "의"}
+            {successType === "제출"
+              ? "세금 계산서를"
+              : "CSV 파일에 세금 계산서의"}
           </div>
           {successType === "제출"
             ? "성공적으로 본사에 제출했습니다."

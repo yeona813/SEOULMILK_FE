@@ -262,5 +262,6 @@ export const postInviteAgency = async (idList: number[]) => {
     }
   } catch (error) {
     console.error(error);
+    return false;
   }
 };

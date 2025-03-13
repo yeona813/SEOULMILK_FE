@@ -9,6 +9,7 @@ import AdminHubTable from "@/components/adminHub/AdminHubTable";
 import Pagination from "@/components/common/control/Pagination";
 import { downloadCSV } from "@/components/common/downloadCSV";
 import SearchConditionModal from "@/components/common/modal/SearchConditionModal";
+import SuccessModal from "@/components/common/modal/SuccessModal";
 import CheckModal from "@/components/submit/modal/CheckModal";
 import { useAdminPickerStore } from "@/stores/useAdminStore";
 import useConditionSearchStore from "@/stores/useConditionSearchStore";
@@ -23,8 +24,13 @@ const AdminHubPage = () => {
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
   const { currentStatus } = useAdminPickerStore();
-  const { isSaveCheckOpen, closeSaveCheck, isSearchConditionOpen } =
-    useModalStore();
+  const {
+    isSaveCheckOpen,
+    closeSaveCheck,
+    isSearchConditionOpen,
+    isSuccessSubmit,
+    openSuccessSubmit,
+  } = useModalStore();
   const { isSearchMode, fetchSearchData } = useConditionSearchStore();
   const { startMonth, endMonth, supplierTags, recipientTags } =
     useConditionSearchStore();
@@ -71,10 +77,14 @@ const AdminHubPage = () => {
           recipientTags,
           currentStatus
         );
+        console.log("csv", response);
         downloadCSV(response);
       } else {
         const response = await postCheckedCSV(checkedItem);
-        downloadCSV(response);
+        if (response) {
+          downloadCSV(response);
+          openSuccessSubmit("저장");
+        }
       }
       setCheckedItem([]);
       setIsAllChecked(false);
@@ -141,6 +151,7 @@ const AdminHubPage = () => {
           setData={setData}
         />
       )}
+      {isSuccessSubmit && <SuccessModal />}
     </div>
   );
 };

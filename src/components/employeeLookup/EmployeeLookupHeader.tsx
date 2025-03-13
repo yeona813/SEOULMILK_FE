@@ -1,9 +1,9 @@
 import useModalStore from "@/stores/useModalStore";
 import Button from "../common/button/Button";
-import Picker from "../common/control/Picker";
+import AllPicker from "../common/control/AllPicker";
 import { useSelectionStore } from "@/stores/useSelectionStore";
-import { useState } from "react";
 import { deleteEmployeeTax, postEmployeeTaxCSV } from "@/api/employeeTax";
+import { useState } from "react";
 import { downloadCSV } from "../common/downloadCSV";
 
 interface VerifyHeaderProps {
@@ -12,14 +12,13 @@ interface VerifyHeaderProps {
   successElements?: number;
 }
 
-const VerifyHeader = ({
+const EmployeeLookupHeader = ({
   totalElements,
   failedElements,
   successElements,
 }: VerifyHeaderProps) => {
   const { openSearchCondition, openSuccessSubmit } = useModalStore();
   const { checkedItems, setCheckedItems, setSelectAll } = useSelectionStore();
-
   const [isExporting, setIsExporting] = useState(false);
 
   const handleExportCSV = async () => {
@@ -38,9 +37,9 @@ const VerifyHeader = ({
       alert("CSV 추출 중 오류가 발생했습니다.");
     } finally {
       setIsExporting(false);
-      openSuccessSubmit("저장");
-      setCheckedItems([]); // Clear checked items
+      setCheckedItems([]);
       setSelectAll(false);
+      openSuccessSubmit("저장");
     }
   };
 
@@ -59,6 +58,7 @@ const VerifyHeader = ({
       }
     }
   };
+
   return (
     <div className="w-[1240px] 3xl:w-[1560px] mt-[37px]">
       <div className="flex">
@@ -69,7 +69,8 @@ const VerifyHeader = ({
       </div>
       <div className="mt-[6px] flex justify-between">
         <div className="flex items-end gap-2">
-          <Picker
+          <AllPicker
+            totalCount={totalElements}
             correctCount={successElements}
             inCorrectCount={failedElements}
           />
@@ -112,4 +113,4 @@ const VerifyHeader = ({
   );
 };
 
-export default VerifyHeader;
+export default EmployeeLookupHeader;
