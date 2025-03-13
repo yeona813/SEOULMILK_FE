@@ -1,3 +1,4 @@
+import { useUserPickerStore } from "@/stores/useAdminStore";
 import CheckBox from "../common/control/CheckBox";
 
 interface UsersTableItemProps {
@@ -33,6 +34,7 @@ const UsersTableItem = ({
   onCheckChange,
   onClick,
 }: UsersTableItemProps) => {
+  const { currentPick } = useUserPickerStore();
   const formattedNumber = number.toString().padStart(3, "0");
 
   // 배경색을 선택 상태에 따라 다르게 설정
@@ -59,9 +61,13 @@ const UsersTableItem = ({
       <div className="w-[336px] 3xl:w-[400px]">{name}</div>
       <div className="w-[300px] 3xl:w-[400px]">{id}</div>
       <div className="w-[310px] 3xl:w-[400px]">{email}</div>
-      <div className="w-[47px] text-center text-secondary-500 bg-secondary-25 border-secondary-200 border border-solid h-6 rounded">
-        {agency}
-      </div>
+      {currentPick === "EMPLOYEE" ? (
+        <div className="w-[47px] text-center">{agency}</div>
+      ) : (
+        <div className="w-[47px] text-center text-secondary-500 bg-secondary-25 border-secondary-200 border border-solid h-6 rounded">
+          {agency}
+        </div>
+      )}
     </div>
   );
 };
