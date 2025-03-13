@@ -1,4 +1,4 @@
-import { getAgencyList, getEmployeeList } from "@/api/admin";
+import { getEmployeeList, getSignAgencyList } from "@/api/admin";
 import Pagination from "@/components/common/control/Pagination";
 import UsersHeader from "@/components/users/UsersHeader";
 import UsersTable from "@/components/users/UsersTable";
@@ -44,7 +44,7 @@ const UsersPage = () => {
         setData(response);
       }
     } else {
-      const response = await getAgencyList(currentPage - 1);
+      const response = await getSignAgencyList(currentPage - 1);
       if (response) {
         setData(response);
       }
@@ -57,7 +57,7 @@ const UsersPage = () => {
 
   return (
     <div className="relative flex flex-col items-center w-full h-full gap-4 bg-grayScale-25">
-      <UsersHeader checkedItem={checkedItem} />
+      <UsersHeader />
       {data ? (
         <UsersTable
           data={data?.agencyList ?? []}

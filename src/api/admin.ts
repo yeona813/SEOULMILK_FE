@@ -6,26 +6,30 @@ import { api } from "./index";
  * 관리자 로그인
  *
  * @param masterKey - 마스터키
- * @returns
+ * @returns {Promise<boolean>}
  */
-export const postAdminLogin = async (masterKey: string) => {
+export const postAdminLogin = async (masterKey: string): Promise<boolean> => {
   try {
-    const response = await api.post("/admin/login", {
-      masterKey,
-    });
+    const response = await api.post("/admin/login", { masterKey });
 
     if (response.data) {
-      localStorage.setItem("role", "admin");
-      localStorage.setItem("accessToken", response.data.data.accessToken);
-      localStorage.setItem("refreshToken", response.data.data.refreshToken);
+      const { accessToken, refreshToken } = response.data.data;
+
+      await Promise.all([
+        localStorage.setItem("role", "admin"),
+        localStorage.setItem("accessToken", accessToken),
+        localStorage.setItem("refreshToken", refreshToken),
+      ]);
 
       useUserStore.getState().setUser({
         role: "admin",
       });
+
       return true;
     }
+    return false;
   } catch (error) {
-    console.log(error);
+    console.error("Login failed:", error);
     return false;
   }
 };
@@ -171,6 +175,24 @@ export const getAgencyList = async (page: number) => {
 
   try {
     const response = await api.get(`/admin/agency?page=${page}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (response.data) {
+      return response.data.data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getSignAgencyList = async (page: number) => {
+  const accessToken = localStorage.getItem("accessToken");
+
+  try {
+    const response = await api.get(`/admin/agency/registered?page=${page}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

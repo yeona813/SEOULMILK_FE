@@ -51,7 +51,7 @@ const ShopTableItem = ({
       </div>
       <div className="w-[150px] 3xl:w-[200px]">{formattedNumber}</div>
       <div className="w-[300px] 3xl:w-[450px]">{agencyName}</div>
-      <div className="w-[300px] 3xl:w-[440px]">{email}</div>
+      <div className="w-[250px] 3xl:w-[440px]">{email}</div>
       <div className="w-[53px] flex items-center">
         {validationResult === "승인" ? (
           <div className="w-[47px] text-center text-secondary-500 bg-secondary-25 border-secondary-200 border border-solid h-6 rounded">

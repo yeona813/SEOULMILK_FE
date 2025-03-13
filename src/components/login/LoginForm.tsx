@@ -27,7 +27,7 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (data: FormValues) => {
-    let isSuccess: boolean | null | undefined = false;
+    let isSuccess = false;
 
     if (role === "admin") {
       isSuccess = await postAdminLogin(data.employeeNumber);
@@ -46,13 +46,15 @@ const LoginForm = () => {
     }
 
     if (isSuccess) {
-      if (role === "admin") {
-        navigate("/addUser");
-      } else if (role === "dealership") {
-        navigate("/submit");
-      } else {
-        navigate("/verify");
-      }
+      setTimeout(() => {
+        if (role === "admin") {
+          navigate("/addUser");
+        } else if (role === "dealership") {
+          navigate("/submit");
+        } else {
+          navigate("/verify");
+        }
+      }, 500);
     }
   };
 
@@ -90,17 +92,13 @@ const LoginForm = () => {
             )}
             {role === "dealership" && (
               <div className="text-center text-grayScale-400 b2">
-                <div className="flex items-center gap-3">
-                  <button className="w-[126px]" type="button">
-                    회원가입{" "}
-                  </button>{" "}
-                  <div className="w-[0.5px] h-4 bg-gray-400" />
-                  <button className="w-[126px]" type="button">
-                    아이디 찾기{" "}
-                  </button>{" "}
-                  <div className="w-[0.5px] h-4 bg-gray-400" />
-                  <button className="w-[126px]" type="button">
-                    비밀번호 재설정
+                <div className="center">
+                  <button
+                    className="w-[126px]"
+                    type="button"
+                    onClick={() => navigate("/invite")}
+                  >
+                    회원가입
                   </button>
                 </div>
               </div>

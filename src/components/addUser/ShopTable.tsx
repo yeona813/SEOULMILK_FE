@@ -48,7 +48,7 @@ const ShopTable = ({
           <div className="w-[300px] 3xl:w-[450px] flex items-center">
             대리점명
           </div>
-          <div className="w-[300px] 3xl:w-[440px] flex items-center">
+          <div className="w-[250px] 3xl:w-[440px] flex items-center">
             이메일
           </div>
           <div className="w-[50px] 3xl:w-[50px] flex items-center">상태</div>

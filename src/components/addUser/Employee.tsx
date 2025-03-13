@@ -8,9 +8,6 @@ const Employee = () => {
       <div className="flex items-end gap-2">
         <EmployeeDownloadXlsx />
         <EmployeeUpload />
-        <button className="px-[18px] py-2 rounded-lg bg-secondary-500 text-white b3 hover:bg-secondary-700">
-          신규등록
-        </button>
       </div>
       <div className="flex justify-center text-center pt-[168px] bg-white border-gray-200 rounded-xl h-full b2 text-gray-500">
         사원은 등록 즉시 계정이 활성화됩니다. <br />

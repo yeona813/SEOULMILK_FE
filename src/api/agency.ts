@@ -8,13 +8,13 @@ import { Role } from "@/stores/useUserStore";
  * @param agencyId - 대리점 ID
  * @param password - 비밀번호
  * @param role - 로그인하는 유저의 역할
- * @returns accessToken
+ * @returns {Promise<boolean>}
  */
 export const postAgencyLogin = async (
   agencyId: string,
   password: string,
   role: Role
-) => {
+): Promise<boolean> => {
   try {
     const response = await api.post("/agency/login", {
       agencyId,
@@ -25,7 +25,6 @@ export const postAgencyLogin = async (
       const { accessToken, refreshToken, memberId, name, email } =
         response.data.data;
 
-      // Zustand 스토어 업데이트
       useUserStore.getState().setUser({
         id: memberId,
         name,
@@ -33,22 +32,22 @@ export const postAgencyLogin = async (
         role,
       });
 
-      // 로컬 스토리지에 토큰 저장
-      localStorage.setItem("email", email);
-      localStorage.setItem("role", role);
-      localStorage.setItem("name", name);
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+      await Promise.all([
+        localStorage.setItem("email", email),
+        localStorage.setItem("role", role),
+        localStorage.setItem("name", name),
+        localStorage.setItem("accessToken", accessToken),
+        localStorage.setItem("refreshToken", refreshToken),
+      ]);
 
       return true;
-    } else {
-      // 에러 메시지를 처리하거나 반환
-      console.error("Login failed:", response.data.message);
-      return null;
     }
+
+    console.error("Login failed:", response.data.message);
+    return false;
   } catch (error) {
     console.error("Login API error:", error);
-    return null;
+    return false;
   }
 };
 

@@ -175,7 +175,7 @@ const SubmitTable = ({
           )}
         </div>
       )}
-      {isFailDrawerOpen && isSuccess === "FAILED" && <SubmitDrawer />}
+      {isFailDrawerOpen && <SubmitDrawer />}
     </>
   );
 };

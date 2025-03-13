@@ -12,7 +12,7 @@ export const postEmployeeLogin = async (
   employeeNum: string,
   password: string,
   role: Role
-) => {
+): Promise<boolean> => {
   try {
     const response = await api.post("/employee/login", {
       employeeNum,
@@ -23,30 +23,29 @@ export const postEmployeeLogin = async (
       const { accessToken, refreshToken, memberId, name, email } =
         response.data.data;
 
-      // Zustand 스토어 업데이트
       useUserStore.getState().setUser({
-        id: memberId, // 'memberId'를 스토어의 'id' 필드로 매핑
+        id: memberId,
         name,
         email,
         role,
       });
 
-      // 로컬 스토리지에 토큰 저장
-      localStorage.setItem("name", name);
-      localStorage.setItem("role", role);
-      localStorage.setItem("email", email);
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+      await Promise.all([
+        localStorage.setItem("name", name),
+        localStorage.setItem("role", role),
+        localStorage.setItem("email", email),
+        localStorage.setItem("accessToken", accessToken),
+        localStorage.setItem("refreshToken", refreshToken),
+      ]);
 
       return true;
-    } else {
-      // 로그인 실패 처리
-      console.error("Login failed:", response.data.message);
-      return null;
     }
+
+    console.error("Login failed:", response.data.message);
+    return false;
   } catch (error) {
     console.error("Login API error:", error);
-    return null;
+    return false;
   }
 };
 

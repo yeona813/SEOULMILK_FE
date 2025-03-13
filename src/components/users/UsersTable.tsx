@@ -69,9 +69,7 @@ const UsersTable = ({
           <div className="w-[310px] 3xl:w-[400px] flex items-center">
             이메일
           </div>
-          <div className="w-[61px] flex items-center text-center">
-            담당대리점
-          </div>
+          <div className="w-[61px] flex items-center text-center">가입여부</div>
         </div>
         <div>
           {/* 테이블 항목 반복 */}

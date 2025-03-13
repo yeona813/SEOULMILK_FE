@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "../layout/Layout";
-import MyPage from "@/pages/MyPage";
 import LoginPage from "@/pages/LoginPage";
 import VerifyPage from "@/pages/VerifyPage";
 import SubmitPage from "@/pages/SubmitPage";
@@ -23,7 +22,6 @@ export const router = createBrowserRouter([
       { path: "submit", element: <SubmitPage /> },
       { path: "addUser", element: <AddUserPage /> },
       { path: "users", element: <UsersPage /> },
-      { path: "my", element: <MyPage /> },
       { path: "adminHub", element: <AdminHubPage /> },
       { path: "employee-lookup", element: <EmployeeLookupPage /> },
     ],

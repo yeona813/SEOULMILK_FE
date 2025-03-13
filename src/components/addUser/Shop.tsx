@@ -41,9 +41,7 @@ const Shop = ({ data }: ShopProps) => {
         </div>
         <div className="flex items-end gap-2">
           <ShopUpload />
-          <button className="px-[18px] py-2 rounded-lg bg-secondary-500 text-white b3 hover:bg-secondary-700 h-fit">
-            신규등록
-          </button>
+
           <button
             className={`px-[22px] py-3 rounded-lg text-white b3 ${
               checkedItem.length === 0
