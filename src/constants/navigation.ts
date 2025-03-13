@@ -28,7 +28,7 @@ export const navigationItems = [
     text: "계산서 통합 조회",
     url: "/adminHub",
     icon: ListSearch,
-    roles: ["dealership", "admin"],
+    roles: ["admin"],
   },
   {
     text: "계산서 통합 조회",
