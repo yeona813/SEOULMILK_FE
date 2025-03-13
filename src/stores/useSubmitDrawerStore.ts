@@ -1,5 +1,18 @@
+import { Employee } from "@/pages/UsersPage";
 import { NtsTax } from "@/types/ntsTax";
 import { create } from "zustand";
+
+interface UserDrawerState {
+  isUserDrawerOpen: boolean;
+  openUserDrawer: () => void;
+  closeUserDrawer: () => void;
+}
+
+export const useUserDrawerStore = create<UserDrawerState>((set) => ({
+  isUserDrawerOpen: false,
+  openUserDrawer: () => set(() => ({ isUserDrawerOpen: true })),
+  closeUserDrawer: () => set(() => ({ isUserDrawerOpen: false })),
+}));
 
 interface DrawerState {
   isFailDrawerOpen: boolean;
@@ -29,4 +42,14 @@ export const useSubmitInvoiceStore = create<SubmitInvoiceStore>((set, get) => ({
       set({ selectedItem: updatedInvoice });
     }
   },
+}));
+
+interface ClickEmployeeStore {
+  selectedItem: Employee | null;
+  setSelectedItem: (employee: Employee) => void;
+}
+
+export const useEmployeeStore = create<ClickEmployeeStore>((set) => ({
+  selectedItem: null,
+  setSelectedItem: (selectedItem) => set({ selectedItem }),
 }));

@@ -35,7 +35,6 @@ const AdminHubTable = ({
 
   const handleItemClick = (item: NtsTax) => {
     setSelectedItem(item);
-    setSelectedItem(item);
   };
 
   const handleCheckChange = (checked: boolean, ntsTaxId: number) => {
