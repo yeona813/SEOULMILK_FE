@@ -39,19 +39,6 @@ const PasswordInput = () => {
         value={password}
         {...register("password", {
           required: true,
-          minLength: {
-            value: 8,
-            message: "사원번호 또는 비밀번호가 잘못 되었습니다.",
-          },
-          maxLength: {
-            value: 16,
-            message: "사원번호 또는 비밀번호가 잘못 되었습니다.",
-          },
-          pattern: {
-            value:
-              /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$/,
-            message: "사원번호 또는 비밀번호가 잘못 되었습니다.",
-          },
         })}
         onFocus={onFocus}
         onBlur={onBlur}

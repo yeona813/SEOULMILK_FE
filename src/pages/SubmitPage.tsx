@@ -123,7 +123,11 @@ const SubmitPage = () => {
         {isConvertOpen && <ConvertModal />}
         {isSaveCheckOpen && (
           <CheckModal
-            count={checkedItem.length}
+            count={
+              isAllChecked
+                ? (data?.successElements as number)
+                : checkedItem.length
+            }
             onDelete={handleDelete}
             onSubmit={handleSubmit}
           />

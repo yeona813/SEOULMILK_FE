@@ -45,11 +45,11 @@ const InviteForm = ({ setStage }: InviteFormProps) => {
     >
       <p className="h3 text-grayScale-800">회원가입</p>
       <div className="flex flex-col w-full gap-2">
-        {/* 사원번호 입력 필드 */}
+        {/* 아이디 입력 필드 */}
         <p className="st4 text-grayScale-500">아이디</p>
         <input
           type="text"
-          placeholder="사원번호"
+          placeholder="아이디"
           {...register("agencyId", { required: "이름을 입력하세요." })}
           className={`w-full px-4 py-2 rounded-2xl b2 text-grayScale-800 bg-grayScale-25
         border ${errors.agencyId ? "border-red-500" : "border-grayScale-100"} 

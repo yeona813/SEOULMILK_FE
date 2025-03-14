@@ -45,7 +45,7 @@ const SideBar = () => {
           <div
             className={`flex px-3 py-2 rounded-xl hover:bg-grayScale-50 ${location.pathname === "/my" && "bg-grayScale-50"}`}
           >
-            <span className="b2 text-grayScale-500">{name}</span>
+            <span className="b4 text-grayScale-500">{name}</span>
           </div>
           <div className="px-3 py-[2px] border-secondary-500 border rounded-xl b5 text-secondary-500">
             {roleNames[role]}

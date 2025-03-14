@@ -20,12 +20,13 @@ const Shop = ({ data }: ShopProps) => {
     try {
       const success = await postInviteAgency(checkedItem);
       if (success) {
-        openSuccessText("저장");
+        openSuccessText("전송");
       }
     } catch (error) {
       console.error(error);
     } finally {
       setCheckedItem([]);
+      setIsAllChecked(false);
     }
   };
 

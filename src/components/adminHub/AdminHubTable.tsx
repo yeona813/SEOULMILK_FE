@@ -86,7 +86,7 @@ const AdminHubTable = ({
         <div>
           {/* 테이블 항목 반복 */}
 
-          {data.length > 0 ? (
+          {data && data.length > 0 ? (
             data.map((item) => (
               <div
                 className="w-[1220x] 3xl:w-[1560px] mb-[6px]"

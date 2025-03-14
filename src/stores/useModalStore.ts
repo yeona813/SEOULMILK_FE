@@ -35,7 +35,7 @@ interface ModalState {
   isSuccessSubmit: boolean;
   successType: "저장" | "제출" | null;
   isSuccessText: boolean;
-  successTextType: "사원 등록" | "대리점 등록" | "저장" | "삭제" | null;
+  successTextType: "사원 등록" | "대리점 등록" | "전송" | "삭제" | null;
   ocrData: OCRData | null;
 
   openSuccessRevalidationModal: () => void;
@@ -57,7 +57,7 @@ interface ModalState {
   closeSuccessSubmit: () => void;
 
   openSuccessText: (
-    type: "사원 등록" | "대리점 등록" | "저장" | "삭제"
+    type: "사원 등록" | "대리점 등록" | "전송" | "삭제"
   ) => void;
   closeSuccessText: () => void;
 

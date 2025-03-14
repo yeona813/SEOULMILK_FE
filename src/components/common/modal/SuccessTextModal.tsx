@@ -17,7 +17,7 @@ const SuccessTextModal = ({ count }: SuccessTextModalProps) => {
       </>
     ),
     "대리점 등록": "대리점이 회원가입 시 계정이 활성화됩니다.",
-    저장: (
+    전송: (
       <div className="flex gap-[2px] items-center">
         대리점에 초대 메일이 발송되었습니다.
       </div>
@@ -40,7 +40,7 @@ const SuccessTextModal = ({ count }: SuccessTextModalProps) => {
         <span className="h2 text-grayScale-900">
           {successTextType === "사원 등록" || successTextType === "대리점 등록"
             ? "등록"
-            : successTextType}
+            : successTextType}{" "}
           완료
         </span>
         <div className="text-center b2 text-grayScale-500">

@@ -50,10 +50,6 @@ const EmployeeNumberInput = () => {
           placeholder={placeholder}
           {...register("employeeNumber", {
             required: true,
-            pattern: {
-              value: /^[0-9]+$/,
-              message: "사원번호 또는 비밀번호가 잘못 되었습니다.",
-            },
           })}
           onFocus={onFocus}
           onBlur={onBlur}
@@ -89,10 +85,6 @@ const EmployeeNumberInput = () => {
         placeholder={placeholder}
         {...register("employeeNumber", {
           required: true,
-          pattern: {
-            value: /^[0-9]+$/,
-            message: "사원번호 또는 비밀번호가 잘못 되었습니다.",
-          },
         })}
         onFocus={onFocus}
         onBlur={onBlur}
