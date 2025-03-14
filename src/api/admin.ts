@@ -304,6 +304,21 @@ export const getEmployeeList = async (page: number) => {
   }
 };
 
+export const getEmployee = async (employeeId: number) => {
+  const accessToken = localStorage.getItem("accessToken");
+  try {
+    const response = await api.get(`/admin/employee/${employeeId}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    if (response) {
+      return response.data.data.agencies;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const getShopList = async (page: number) => {
   const accessToken = localStorage.getItem("accessToken");
   try {

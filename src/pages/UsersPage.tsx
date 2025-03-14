@@ -57,7 +57,7 @@ const UsersPage = () => {
 
   return (
     <div className="relative flex flex-col items-center w-full h-full gap-4 bg-grayScale-25">
-      <UsersHeader />
+      <UsersHeader checkedItem={checkedItem} />
       {data ? (
         <UsersTable
           data={data?.agencyList ?? []}

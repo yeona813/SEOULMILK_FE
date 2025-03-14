@@ -32,7 +32,7 @@ const Shop = ({ data }: ShopProps) => {
 
   return (
     <div className="flex flex-col h-full gap-4">
-      <h1 className="h1 text-grayScale-900 mb-[10px]">대리점</h1>
+      <h1 className="h1 text-grayScale-900">대리점</h1>
       <div className="flex items-end justify-between">
         <div className="flex items-center">
           <ShopDownloadXlsx />

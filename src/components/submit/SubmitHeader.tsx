@@ -26,6 +26,11 @@ const SubmitHeader = ({
       <h1 className="flex justify-start h1 text-grayScale-900">
         세금 계산서 제출
       </h1>
+      <p className="b6 text-grayScale-500">
+        {isSuccess === "SUCCESS"
+          ? "업로드된 계산서 중, 성공 페이지에 표시된 항목들은 글자가 정확하게 인식된 것입니다. 전체 서택 후 본사로 제출해주세요."
+          : " 실패 페이지에는 빠진 정보가 있는 세금계산서가 모여 있습니다. 클릭하면 원본 사진을 보며 직접 입력할 수 있으며, 완료하면 성공 페이지로 이동합니다."}
+      </p>
       <div className="flex items-end justify-between w-full mt-[6px]">
         <div className="flex gap-[10px] items-center">
           <CorrectPicker
