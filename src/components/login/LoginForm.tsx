@@ -1,7 +1,6 @@
 import { useForm, FormProvider } from "react-hook-form";
 import EmployeeNumberInput from "../common/input/EmployeeNumberInput";
 import PasswordInput from "../common/input/PasswordInput";
-import ErrorMessages from "./ErrorMessage";
 import UserPicker from "../common/control/UserPicker";
 import { postEmployeeLogin } from "@/api/employee";
 import { useUserStore } from "@/stores/useUserStore";
@@ -69,16 +68,10 @@ const LoginForm = () => {
             <EmployeeNumberInput />
             {!(role === "admin") && <PasswordInput />}
           </div>
-          <ErrorMessages />
           <div className="mt-[18px] flex flex-col gap-4">
             <button
               type="submit"
-              className={`w-full h-[60px] rounded-xl st1 text-white center ${
-                methods.formState.isValid
-                  ? "bg-secondary-500"
-                  : "bg-secondary-50"
-              }`}
-              disabled={!methods.formState.isValid}
+              className={`w-full h-[60px] rounded-xl st1 text-white center bg-secondary-500`}
             >
               로그인
             </button>

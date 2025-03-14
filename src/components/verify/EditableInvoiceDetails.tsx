@@ -9,18 +9,17 @@ const EditableInvoiceDetails = () => {
 
   const handleInputChange = (f: keyof TaxInvoiceDetails, v: string) => {
     if (f === "issueId") {
-      v = v.replace(/\D/g, "").slice(0, 24); // 숫자만 허용 + 최대 24자리 제한
-      v = v.replace(/(\d{8})(\d{8})?(\d{8})?/, (_, p1, p2, p3) =>
-        [p1, p2, p3].filter(Boolean).join("-")
-      ); // 8자리마다 "-" 추가
+      v = v.replace(/\D/g, "").slice(0, 24);
+      if (v.length > 8) v = v.replace(/^(\d{8})(\d)/, "$1-$2");
+      if (v.length > 16) v = v.replace(/^(\d{8})-(\d{8})(\d{1,8})/, "$1-$2-$3");
     } else if (f === "suId" || f === "ipId") {
       v = v.replace(/\D/g, "").slice(0, 10); // 숫자만 허용 + 최대 10자리 제한
       if (v.length > 3) v = v.replace(/^(\d{3})(\d)/, "$1-$2");
       if (v.length > 6) v = v.replace(/^(\d{3})-(\d{2})(\d{1,5})/, "$1-$2-$3");
     } else if (f === "issueAt" || f === "createdDate") {
       v = v.replace(/\D/g, "").slice(0, 8); // 숫자만 허용 + 최대 8자리 제한
-      if (v.length > 4) v = v.replace(/^(\d{4})(\d{2})/, "$1.$2");
-      if (v.length > 6) v = v.replace(/^(\d{4})\.(\d{2})(\d{2})/, "$1.$2.$3");
+      if (v.length > 4) v = v.replace(/^(\d{4})(\d{1,2})/, "$1-$2");
+      if (v.length > 6) v = v.replace(/^(\d{4})-(\d{2})(\d{1,2})/, "$1-$2-$3");
     } else if (f === "chargeTotal" || f === "taxTotal" || f === "grandTotal") {
       v = v.replace(/\D/g, ""); // 숫자만 허용
       v = Number(v).toLocaleString(); // 세 자리마다 콤마(,) 추가

@@ -13,11 +13,14 @@ const EditableInvoice = () => {
 
     // 승인번호 (12345678-12345678-12345678)
     if (field === "issueId") {
-      formattedValue = formattedValue.replace(/\D/g, "").slice(0, 24); // 숫자만 허용 + 최대 24자리 제한
-      formattedValue = formattedValue.replace(
-        /(\d{8})(\d{8})?(\d{8})?/,
-        (_, p1, p2, p3) => [p1, p2, p3].filter(Boolean).join("-")
-      );
+      formattedValue = formattedValue.replace(/\D/g, "").slice(0, 24);
+      if (formattedValue.length > 8)
+        formattedValue = formattedValue.replace(/^(\d{8})(\d)/, "$1-$2");
+      if (formattedValue.length > 16)
+        formattedValue = formattedValue.replace(
+          /^(\d{8})-(\d{8})(\d{8})/,
+          "$1-$2-$3"
+        );
     }
     // 사업자등록번호 (123-12-12345)
     else if (field === "suId" || field === "ipId") {
@@ -31,14 +34,14 @@ const EditableInvoice = () => {
         );
     }
     // 날짜 (YYYY.MM.DD)
-    else if (field === "issueAt" || field === "createdDate") {
+    else if (field === "issueDate" || field === "createdDate") {
       formattedValue = formattedValue.replace(/\D/g, "").slice(0, 8);
       if (formattedValue.length > 4)
-        formattedValue = formattedValue.replace(/^(\d{4})(\d{2})/, "$1.$2");
+        formattedValue = formattedValue.replace(/^(\d{4})(\d{2})/, "$1-$2");
       if (formattedValue.length > 6)
         formattedValue = formattedValue.replace(
           /^(\d{4})\.(\d{2})(\d{2})/,
-          "$1.$2.$3"
+          "$1-$2-$3"
         );
     }
     // 금액 필드 (숫자만 허용, 세 자리마다 콤마 추가)
@@ -60,7 +63,7 @@ const EditableInvoice = () => {
     ],
     fields: [
       "issueId",
-      "issueAt",
+      "issueDate",
       "suId",
       "ipId",
       "chargeTotal",

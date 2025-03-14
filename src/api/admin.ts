@@ -12,7 +12,7 @@ export const postAdminLogin = async (masterKey: string): Promise<boolean> => {
   try {
     const response = await api.post("/admin/login", { masterKey });
 
-    if (response.data) {
+    if (response.data.success) {
       const { accessToken, refreshToken } = response.data.data;
 
       await Promise.all([
@@ -27,6 +27,7 @@ export const postAdminLogin = async (masterKey: string): Promise<boolean> => {
 
       return true;
     }
+    alert(response.data.data.message);
     return false;
   } catch (error) {
     console.error("Login failed:", error);

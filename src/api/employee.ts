@@ -41,7 +41,7 @@ export const postEmployeeLogin = async (
       return true;
     }
 
-    console.error("Login failed:", response.data.message);
+    alert(response.data.data.message);
     return false;
   } catch (error) {
     console.error("Login API error:", error);
